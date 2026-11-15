@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <base href="https://example.invalid/people/">
+  <title>Avery Example · Sample Works</title>
+  <meta property="og:title" content="Avery Example">
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://example.invalid/people/avery.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Avery Example">
+  <script type="application/ld+json">
+  [
+    {
+      "@context": ["https://example.invalid/vocab", "https://example.invalid/contexts/local.jsonld"],
+      "@type": "Person",
+      "@id": "https://example.invalid/people/avery#person",
+      "name": "Avery Example",
+      "jobTitle": "Data Steward",
+      "url": "/people/avery.html",
+      "email": "avery@example.invalid",
+      "sameAs": ["https://example.invalid/profiles/avery"],
+      "worksFor": {"@id": "https://example.invalid/org/sample-works"},
+      "knows": {"@id": "https://example.invalid/people/missing#person"}
+    },
+    {
+      "@context": "https://example.invalid/vocab",
+      "@type": "Organization",
+      "@id": "https://example.invalid/org/sample-works",
+      "name": "Sample Works",
+      "url": "https://example.invalid/",
+      "email": "hello@example.invalid",
+      "logo": "/media/sample-works.png",
+      "member": {"@id": "https://example.invalid/people/avery#person"}
+    }
+  ]
+  </script>
+</head>
+<body>
+  <main>
+    <div vocab="https://example.invalid/vocab/" typeof="Person"
+         about="https://example.invalid/people/avery#person">
+      <h1 property="name">Avery Example</h1>
+      <p property="jobTitle">Lead Data Steward</p>
+      <a property="url" href="/people/avery.html">Profile</a>
+      <span property="email">avery@example.invalid</span>
+    </div>
+  </main>
+</body>
+</html>

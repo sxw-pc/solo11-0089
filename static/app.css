@@ -1,0 +1,49 @@
+:root {
+  color-scheme: light;
+  --ink: #182126;
+  --muted: #60717a;
+  --line: #d8e0e2;
+  --paper: #ffffff;
+  --wash: #f3f7f6;
+  --accent: #0d6963;
+  --bad: #a31f1f;
+  --warn: #8a5a00;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--wash);
+  color: var(--ink);
+  font: 15px/1.55 "Segoe UI", system-ui, sans-serif;
+}
+a { color: var(--accent); }
+header.site {
+  background: var(--paper);
+  border-bottom: 3px solid var(--accent);
+}
+header.site .inner, main { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+header.site .inner { display: flex; align-items: baseline; gap: 24px; padding-top: 16px; padding-bottom: 16px; flex-wrap: wrap; }
+header.site strong { font-size: 20px; }
+nav a { margin-right: 16px; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+main { padding-top: 28px; padding-bottom: 64px; }
+h1 { font-size: 28px; margin: 0 0 6px; }
+h2 { margin-top: 34px; }
+.meta { color: var(--muted); font-size: 13px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 12px; }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+.card strong { display: block; font-size: 25px; color: var(--accent); }
+table { width: 100%; border-collapse: collapse; background: var(--paper); font-size: 13px; }
+th, td { padding: 8px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { background: #e9f1ef; }
+code, pre, .mono { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; }
+pre { background: #10191d; color: #eaf2f1; padding: 14px; overflow: auto; border-radius: 6px; white-space: pre-wrap; }
+details { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin: 12px 0; }
+summary { cursor: pointer; color: var(--accent); }
+.chip { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; font-size: 12px; margin: 1px; }
+.error { color: var(--bad); font-weight: 600; }
+.warn { color: var(--warn); font-weight: 600; }
+.info { color: var(--muted); font-weight: 600; }
+.notice { background: var(--paper); border-left: 4px solid var(--accent); padding: 16px; }
+.filter { margin: 12px 0; }
+footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 12px; color: var(--muted); font-size: 12px; }

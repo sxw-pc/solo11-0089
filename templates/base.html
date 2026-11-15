@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Microtag Harvest{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+<header class="site">
+  <div class="inner">
+    <strong>Microtag Harvest</strong>
+    <nav aria-label="Primary">
+      <a href="{{ url_for('index') }}">Overview</a>
+      <a href="{{ url_for('documents') }}">Documents</a>
+      <a href="{{ url_for('entities') }}">Entities</a>
+      <a href="{{ url_for('issues') }}">Issues</a>
+    </nav>
+    <span class="meta">read-only · 127.0.0.1</span>
+  </div>
+</header>
+<main>
+  {% block content %}{% endblock %}
+  <footer>Local read-only review console. No uploads, accounts, or write endpoints.</footer>
+</main>
+</body>
+</html>

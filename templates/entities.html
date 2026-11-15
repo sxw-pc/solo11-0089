@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Entities · Microtag Harvest{% endblock %}
+{% block content %}
+<h1>Entities</h1>
+<p class="meta">Merged entity clusters for run <code>{{ run.run_id }}</code>.</p>
+<table>
+  <thead><tr><th>Entity ID</th><th>Primary type</th><th>Types</th><th>Key</th><th>Sources</th><th>Conflicts</th></tr></thead>
+  <tbody>
+  {% for entity in entities %}
+    <tr>
+      <td class="mono"><a href="{{ url_for('entity_detail', entity_id=entity.entity_id) }}">{{ entity.entity_id }}</a></td>
+      <td>{{ entity.primary_type }}</td>
+      <td>{% for item in entity.types %}<span class="chip">{{ item }}</span>{% endfor %}</td>
+      <td class="mono">{{ entity.key }}</td>
+      <td>{{ entity.source_count }}</td>
+      <td class="mono">{{ entity.conflicts|join(", ") or "—" }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6">No entities.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

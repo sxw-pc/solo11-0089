@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ entity.entity_id }} · Entity{% endblock %}
+{% block content %}
+<h1>Entity <code>{{ entity.entity_id }}</code></h1>
+<p>
+  {% for item in entity.types %}<span class="chip">{{ item }}</span>{% endfor %}
+  <span class="meta">key {{ entity.key }}</span>
+</p>
+{% if entity.identifier %}<p class="meta">Normalized identifier: <code>{{ entity.identifier }}</code></p>{% endif %}
+{% if entity.conflicts %}
+  <p class="warn">Conflicting fields: {{ entity.conflicts|join(", ") }}</p>
+{% endif %}
+
+<h2>Normalized field values</h2>
+<table>
+  <thead><tr><th>Field</th><th>Value</th><th>Raw</th><th>Document</th><th>Syntax</th><th>Locator</th></tr></thead>
+  <tbody>
+  {% for field_name, values in entity.fields.items() %}
+    {% for value in values %}
+    <tr>
+      <td class="mono">{{ field_name }}</td>
+      <td class="mono">{{ value.value|display }}</td>
+      <td class="mono">{{ value.raw|display }}</td>
+      <td class="mono">{{ value.document }}</td>
+      <td>{{ value.syntax }}</td>
+      <td class="mono">{{ value.locator }}</td>
+    </tr>
+    {% endfor %}
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2>Source fragments</h2>
+<p class="meta">Fragments are shown as escaped text. Their full evidence is identified by SHA-256.</p>
+{% for fragment in entity.source_fragments %}
+<details>
+  <summary>{{ fragment.document_path }} · {{ fragment.syntax }} · {{ fragment.locator }} · {{ fragment.fragment_sha256[:16] }}…</summary>
+  <pre>{{ fragment.fragment }}</pre>
+</details>
+{% endfor %}
+{% endblock %}

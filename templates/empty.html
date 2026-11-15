@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}No ledger · Microtag Harvest{% endblock %}
+{% block content %}
+<h1>No ledger available</h1>
+<div class="notice">
+  <p>This console has no readable SQLite ledger yet.</p>
+  <p>Run <code>make demo</code>, then start the console with <code>make serve</code>.</p>
+  <p class="meta">The review console never creates or modifies the database.</p>
+</div>
+{% endblock %}
