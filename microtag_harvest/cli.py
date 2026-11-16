@@ -78,6 +78,24 @@ def _compare(args: argparse.Namespace) -> int:
     return 0
 
 
+def _quote_review(args: argparse.Namespace) -> int:
+    from .offer_lifecycle import lock_quote, review_price_dispute
+
+    original = _load_report(args.original_report)
+    current = _load_report(args.current_report)
+    request = _load_report(args.order)
+    locked = lock_quote(original, request)
+    if locked["status"] == "locked":
+        result = {
+            "lock": locked,
+            "review": review_price_dispute(locked["receipt"], original, current),
+        }
+    else:
+        result = {"lock": locked, "review": None}
+    sys.stdout.write(pretty_json(result))
+    return 0 if result["review"] and result["review"]["status"] == "honor_locked_price" else 1
+
+
 def _golden(args: argparse.Namespace) -> int:
     summary = golden_summary(_load_report(args.report))
     expected_path = Path(args.expected)
@@ -149,6 +167,14 @@ def build_parser() -> argparse.ArgumentParser:
     compare_parser.add_argument("current")
     compare_parser.add_argument("--output", default=None)
     compare_parser.set_defaults(handler=_compare)
+
+    quote_parser = subparsers.add_parser(
+        "quote-review", help="lock an archived Product/Offer quote and review its current price"
+    )
+    quote_parser.add_argument("--original-report", required=True)
+    quote_parser.add_argument("--current-report", required=True)
+    quote_parser.add_argument("--order", required=True)
+    quote_parser.set_defaults(handler=_quote_review)
 
     golden_parser = subparsers.add_parser("golden", help="check or write a golden summary")
     golden_parser.add_argument("--report", default="out/report.json")

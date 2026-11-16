@@ -69,6 +69,18 @@ python -m microtag_harvest serve --db out/ledger.sqlite3
 | `compare BASELINE CURRENT` | 比较两份 JSON 报告，输出新增、修复、仍存问题和实体数量变化。 |
 | `golden` | 从 JSON 报告生成确定性 golden 摘要，或校验已有摘要；`--write` 用于显式重建。 |
 | `serve` | 启动只读复核台，固定监听 `127.0.0.1:5017`。 |
+| `quote-review` | 从归档报告中的 Product/Offer 生成本地订单锁价回执，并核对当前报价；不提交订单或访问网络。 |
+
+报价演示使用 `fixtures/offer_lifecycle/initial` 与 `current` 两份独立本地 HTML 归档。分别用 `run` 生成报告后执行：
+
+```bash
+python -m microtag_harvest quote-review \
+  --original-report OLD_REPORT_JSON \
+  --current-report CURRENT_REPORT_JSON \
+  --order fixtures/offer_lifecycle/order.json
+```
+
+`quote-review` 只接受显式 Product/Offer ID 与固定锁价时间；同一报价存在互相冲突的有效声明时拒绝锁价。回执保存当时的金额、币种、报价条款摘要和报告运行 ID。争议核定会与原始报告核对，再展示当前报告的报价；本地摘要用于识别材料变化，并非密码学签名或对外订单系统。
 
 `run` 常用参数：
 
