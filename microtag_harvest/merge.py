@@ -46,6 +46,9 @@ class MergedEntity:
     sources: tuple[Annotation, ...]
     conflicts: tuple[str, ...] = ()
     references: tuple[str, ...] = ()
+    # Populated by validation.verify_entities after merge grouping is known.
+    # Holds an EntityVerification instance; typed loosely to avoid an import cycle.
+    verification: Any = None
 
     def source_records(self) -> list[dict[str, Any]]:
         rows = [
@@ -75,6 +78,7 @@ class MergedEntity:
                 for name, values in sorted(self.fields.items())
             },
             "conflicts": list(self.conflicts),
+            "verification": self.verification.to_dict() if self.verification else None,
         }
 
 

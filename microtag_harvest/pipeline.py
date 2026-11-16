@@ -10,7 +10,7 @@ from lxml import etree, html
 
 from .config import RunConfig
 from .contracts import Contract, load_contract
-from .validation import validate_annotations
+from .validation import validate_annotations, verify_entities
 from .issues import Issue, RawIssue, issue_counts, normalize_issues
 from .merge import MergedEntity, merge_annotations
 from .parsers import PARSERS
@@ -161,6 +161,12 @@ def build_result(config: RunConfig) -> PipelineResult:
     raw_issues.extend(validate_annotations(annotations, contract))
     entities, merge_issues = merge_annotations(annotations, contract)
     raw_issues.extend(merge_issues)
+    # Entity-level contract verdicts consume the merge grouping, conflicts and
+    # parse failures; per-source annotation issues remain recorded above.
+    _verifications, entity_issues = verify_entities(
+        entities, contract, parse_issues=raw_issues
+    )
+    raw_issues.extend(entity_issues)
     issues = normalize_issues(raw_issues)
     run = _run_metadata(config, contract, documents, annotations, entities, issues)
     return PipelineResult(

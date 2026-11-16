@@ -17,6 +17,8 @@ FIELD_TYPES = {
 }
 FORMATS = {None, "uri", "url", "iso8601", "email", "nonempty"}
 POLICIES = {"error", "warn", "ignore"}
+ENTITY_VERIFICATION_MODES = {"joint", "independent"}
+DEFAULT_ENTITY_VERIFICATION_MODE = "joint"
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
@@ -50,6 +52,23 @@ class TypeSpec:
 
 
 @dataclass(frozen=True)
+class EntityVerificationSpec:
+    """Entity-level contract verification policy.
+
+    joint: complementary sources (across syntaxes or documents) may combine
+      their fields so that the merged entity satisfies required fields.
+    independent: every eligible source must itself carry every required field;
+      the entity can never pass on another source's complementary values.
+    Conflicting scalar values block a pass under both modes.
+    """
+
+    mode: str = DEFAULT_ENTITY_VERIFICATION_MODE
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"mode": self.mode}
+
+
+@dataclass(frozen=True)
 class Contract:
     name: str
     version: int
@@ -59,6 +78,9 @@ class Contract:
     source_path: str
     source_text: str
     sha256: str
+    entity_verification: EntityVerificationSpec = field(
+        default_factory=lambda: EntityVerificationSpec()
+    )
 
     def summary(self) -> dict[str, Any]:
         return {
@@ -67,6 +89,7 @@ class Contract:
             "sha256": self.sha256,
             "unknown_type": self.unknown_type,
             "unknown_field": self.unknown_field,
+            "entity_verification": self.entity_verification.to_dict(),
             "types": {
                 name: {
                     "required": list(spec.required),
@@ -142,6 +165,19 @@ def _parse_type(name: str, raw: Any, path: str, source: str) -> TypeSpec:
     )
 
 
+def _parse_entity_verification(raw: Any, path: str, source: str) -> EntityVerificationSpec:
+    if raw is None:
+        return EntityVerificationSpec()
+    line = _line_for(source, "entity_verification")
+    _require(isinstance(raw, dict),
+             "entity_verification must be a mapping", path, line)
+    mode = raw.get("mode", DEFAULT_ENTITY_VERIFICATION_MODE)
+    _require(isinstance(mode, str) and mode in ENTITY_VERIFICATION_MODES,
+             f"entity_verification.mode must be one of {sorted(ENTITY_VERIFICATION_MODES)}",
+             path, line)
+    return EntityVerificationSpec(mode=mode)
+
+
 def load_contract(path: str | Path) -> Contract:
     contract_path = Path(path)
     source = contract_path.read_text(encoding="utf-8")
@@ -175,6 +211,9 @@ def load_contract(path: str | Path) -> Contract:
         str(type_name): _parse_type(str(type_name), value, display_path, source)
         for type_name, value in sorted(raw_types.items())
     }
+    entity_verification = _parse_entity_verification(
+        raw.get("entity_verification"), display_path, source
+    )
     return Contract(
         name=name.strip(),
         version=version,
@@ -184,4 +223,5 @@ def load_contract(path: str | Path) -> Contract:
         source_path=display_path,
         source_text=source,
         sha256=sha256_hex(source.encode("utf-8")),
+        entity_verification=entity_verification,
     )

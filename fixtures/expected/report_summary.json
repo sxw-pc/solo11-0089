@@ -1,5 +1,5 @@
 {
-  "contract_sha256": "2020e4b452bebb9a99193f9c48383fad1668795c3d1f3ecd6a2ae473885c8496",
+  "contract_sha256": "74725e0c6feadc1d67d29c0bf36614c320c31a5a43bc1c319e303a7b568b3593",
   "counts": {
     "annotations": 17,
     "documents": 6,
@@ -16,6 +16,9 @@
         "DANGLING_REFERENCE": 1,
         "DOC_DUPLICATE_CONTENT": 1,
         "ENTITY_DUPLICATE_ID": 1,
+        "ENTITY_REQUIREMENT_CONFLICT": 3,
+        "ENTITY_REQUIREMENT_MISSING": 2,
+        "ENTITY_VERIFICATION_INELIGIBLE": 1,
         "FIELD_VALUE_CONFLICT": 4,
         "JSONLD_ENTITY_WITHOUT_TYPE": 1,
         "MICRODATA_ITEM_WITHOUT_TYPE": 1,
@@ -25,11 +28,11 @@
         "REMOTE_CONTEXT_NOT_LOADED": 8
       },
       "by_severity": {
-        "error": 9,
+        "error": 14,
         "info": 1,
-        "warn": 24
+        "warn": 25
       },
-      "total": 34
+      "total": 40
     }
   },
   "documents": [
@@ -81,7 +84,23 @@
       "source_count": 2,
       "types": [
         "Person"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [
+          {
+            "annotation_ids": [
+              "7f17546ecec8040a",
+              "f43bc473ffc854f9"
+            ],
+            "entity_type": "Person",
+            "field": "name",
+            "status": "present"
+          }
+        ],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "pass"
+      }
     },
     {
       "conflicts": [
@@ -93,7 +112,41 @@
       "source_count": 2,
       "types": [
         "Event"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [
+          {
+            "annotation_ids": [
+              "69e013ccb6d35fc9",
+              "93dee48036bd1fed"
+            ],
+            "entity_type": "Event",
+            "field": "name",
+            "status": "present"
+          },
+          {
+            "annotation_ids": [
+              "69e013ccb6d35fc9",
+              "93dee48036bd1fed"
+            ],
+            "entity_type": "Event",
+            "field": "startDate",
+            "status": "present"
+          },
+          {
+            "annotation_ids": [
+              "69e013ccb6d35fc9",
+              "93dee48036bd1fed"
+            ],
+            "entity_type": "Event",
+            "field": "location",
+            "status": "conflict"
+          }
+        ],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "fail_conflict"
+      }
     },
     {
       "conflicts": [],
@@ -103,7 +156,13 @@
       "source_count": 1,
       "types": [
         "Metadata"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "pass"
+      }
     },
     {
       "conflicts": [],
@@ -113,7 +172,15 @@
       "source_count": 1,
       "types": [
         "Recipe"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [],
+        "mode": "joint",
+        "reasons": [
+          "unknown_type"
+        ],
+        "verdict": "ineligible"
+      }
     },
     {
       "conflicts": [],
@@ -123,7 +190,30 @@
       "source_count": 1,
       "types": [
         "Organization"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [
+          {
+            "annotation_ids": [
+              "e4680c09bccc0ff4"
+            ],
+            "entity_type": "Organization",
+            "field": "name",
+            "status": "present"
+          },
+          {
+            "annotation_ids": [
+              "e4680c09bccc0ff4"
+            ],
+            "entity_type": "Organization",
+            "field": "url",
+            "status": "present"
+          }
+        ],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "pass"
+      }
     },
     {
       "conflicts": [],
@@ -133,7 +223,38 @@
       "source_count": 1,
       "types": [
         "Article"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [
+          {
+            "annotation_ids": [
+              "530657e12ea9ac29"
+            ],
+            "entity_type": "Article",
+            "field": "headline",
+            "status": "present"
+          },
+          {
+            "annotation_ids": [
+              "530657e12ea9ac29"
+            ],
+            "entity_type": "Article",
+            "field": "author",
+            "status": "present"
+          },
+          {
+            "annotation_ids": [
+              "530657e12ea9ac29"
+            ],
+            "entity_type": "Article",
+            "field": "datePublished",
+            "status": "present"
+          }
+        ],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "pass"
+      }
     },
     {
       "conflicts": [],
@@ -143,7 +264,13 @@
       "source_count": 1,
       "types": [
         "Metadata"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "pass"
+      }
     },
     {
       "conflicts": [],
@@ -153,7 +280,30 @@
       "source_count": 1,
       "types": [
         "Organization"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [
+          {
+            "annotation_ids": [
+              "60ab0da34f952302"
+            ],
+            "entity_type": "Organization",
+            "field": "name",
+            "status": "present"
+          },
+          {
+            "annotation_ids": [
+              "60ab0da34f952302"
+            ],
+            "entity_type": "Organization",
+            "field": "url",
+            "status": "present"
+          }
+        ],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "pass"
+      }
     },
     {
       "conflicts": [],
@@ -163,7 +313,13 @@
       "source_count": 1,
       "types": [
         "Metadata"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "pass"
+      }
     },
     {
       "conflicts": [],
@@ -173,7 +329,36 @@
       "source_count": 1,
       "types": [
         "Product"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [
+          {
+            "annotation_ids": [
+              "fbd12cceef4c9878"
+            ],
+            "entity_type": "Product",
+            "field": "name",
+            "status": "present"
+          },
+          {
+            "annotation_ids": [],
+            "entity_type": "Product",
+            "field": "sku",
+            "status": "missing"
+          },
+          {
+            "annotation_ids": [
+              "fbd12cceef4c9878"
+            ],
+            "entity_type": "Product",
+            "field": "offers",
+            "status": "present"
+          }
+        ],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "fail_missing"
+      }
     },
     {
       "conflicts": [
@@ -186,7 +371,44 @@
       "source_count": 3,
       "types": [
         "Product"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [
+          {
+            "annotation_ids": [
+              "09877c7de83b7d6f",
+              "119aad4de338aabd",
+              "c428fa9c022142c2"
+            ],
+            "entity_type": "Product",
+            "field": "name",
+            "status": "conflict"
+          },
+          {
+            "annotation_ids": [
+              "09877c7de83b7d6f",
+              "119aad4de338aabd",
+              "c428fa9c022142c2"
+            ],
+            "entity_type": "Product",
+            "field": "sku",
+            "status": "present"
+          },
+          {
+            "annotation_ids": [
+              "09877c7de83b7d6f",
+              "119aad4de338aabd",
+              "c428fa9c022142c2"
+            ],
+            "entity_type": "Product",
+            "field": "offers",
+            "status": "conflict"
+          }
+        ],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "fail_conflict"
+      }
     },
     {
       "conflicts": [],
@@ -196,7 +418,13 @@
       "source_count": 1,
       "types": [
         "Metadata"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "pass"
+      }
     },
     {
       "conflicts": [],
@@ -206,7 +434,28 @@
       "source_count": 1,
       "types": [
         "Organization"
-      ]
+      ],
+      "verification": {
+        "field_evidence": [
+          {
+            "annotation_ids": [
+              "3c15b93ec17d682b"
+            ],
+            "entity_type": "Organization",
+            "field": "name",
+            "status": "present"
+          },
+          {
+            "annotation_ids": [],
+            "entity_type": "Organization",
+            "field": "url",
+            "status": "missing"
+          }
+        ],
+        "mode": "joint",
+        "reasons": [],
+        "verdict": "fail_missing"
+      }
     }
   ],
   "issues": [
@@ -217,6 +466,22 @@
       "issue_id": "7f4438782da6",
       "locator": "script[type=application/ld+json]#0",
       "severity": "warn"
+    },
+    {
+      "code": "ENTITY_REQUIREMENT_CONFLICT",
+      "document": "catalog/widget.html",
+      "field": "name",
+      "issue_id": "b37452caaef7",
+      "locator": "script[type=application/ld+json]#0/graph[0]",
+      "severity": "error"
+    },
+    {
+      "code": "ENTITY_REQUIREMENT_CONFLICT",
+      "document": "catalog/widget.html",
+      "field": "offers",
+      "issue_id": "948b918db027",
+      "locator": "script[type=application/ld+json]#0/graph[0]",
+      "severity": "error"
     },
     {
       "code": "MULTI_SYNTAX_CONFLICT",
@@ -283,6 +548,14 @@
       "severity": "error"
     },
     {
+      "code": "ENTITY_VERIFICATION_INELIGIBLE",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "0909f8d8c06d",
+      "locator": "script[type=application/ld+json]#1/entity[0]",
+      "severity": "warn"
+    },
+    {
       "code": "REMOTE_CONTEXT_NOT_LOADED",
       "document": "edge/broken.html",
       "field": "",
@@ -307,6 +580,14 @@
       "severity": "warn"
     },
     {
+      "code": "ENTITY_REQUIREMENT_MISSING",
+      "document": "edge/broken.html",
+      "field": "url",
+      "issue_id": "122d8da9a7c5",
+      "locator": "script[type=application/ld+json]#2/entity[0]",
+      "severity": "error"
+    },
+    {
       "code": "REMOTE_CONTEXT_NOT_LOADED",
       "document": "edge/broken.html",
       "field": "",
@@ -321,6 +602,14 @@
       "issue_id": "9985e058f741",
       "locator": "script[type=application/ld+json]#3/entity[0]",
       "severity": "warn"
+    },
+    {
+      "code": "ENTITY_REQUIREMENT_MISSING",
+      "document": "edge/broken.html",
+      "field": "sku",
+      "issue_id": "c0eb76d4edc3",
+      "locator": "script[type=application/ld+json]#3/entity[0]",
+      "severity": "error"
     },
     {
       "code": "CONTRACT_ENUM_INVALID",
@@ -425,6 +714,14 @@
       "issue_id": "9e203edca2f1",
       "locator": "script[type=application/ld+json]#0",
       "severity": "warn"
+    },
+    {
+      "code": "ENTITY_REQUIREMENT_CONFLICT",
+      "document": "events/spring-meetup.html",
+      "field": "location",
+      "issue_id": "cdc93e981d55",
+      "locator": "script[type=application/ld+json]#0/entity[0]",
+      "severity": "error"
     },
     {
       "code": "MULTI_SYNTAX_CONFLICT",

@@ -2,6 +2,13 @@ name: sample-site
 version: 1
 unknown_type: error
 unknown_field: warn
+# Entity-level contract verification.
+# joint: complementary sources (different syntaxes/documents) may combine
+#   their required fields so the merged entity passes.
+# independent: every eligible source must itself be complete; complementary
+#   sources leave the entity failing. Conflicting values block both modes.
+entity_verification:
+  mode: joint
 types:
   Organization:
     required: [name, url]

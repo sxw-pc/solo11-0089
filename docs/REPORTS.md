@@ -55,6 +55,13 @@
 - `sources`：来源标注 ID、文档、语法、locator、片段哈希，稳定排序。
 - `fields`：每个字段的归一化值、原始值、文档、语法、locator、片段哈希和标注 ID。所有冲突来源都保留。
 - `conflicts`：冲突字段名排序列表。
+- `verification`：实体级契约核验结论，包含：
+  - `verdict`：`pass` / `fail_missing` / `fail_conflict` / `ineligible`；
+  - `mode`：契约声明的 `joint` 或 `independent`；
+  - `reasons`：`ineligible` 时的原因（`unknown_type`、`extraction_incomplete`）；
+  - `eligible_annotation_ids` / `ineligible_annotation_ids`：有资格与无资格来源；
+  - `failed_extractions`：解析失败槽位（文档、语法、locator、片段哈希）；
+  - `type_results`：逐契约类型的必填字段证据，每条含字段状态（`present` / `complementary` / `missing` / `conflict` / `ineligible`）及提供值的 annotation_id、locator、fragment_sha256 和归一化值。
 
 ### issues
 
@@ -66,14 +73,14 @@
 
 ## Markdown 报告
 
-包含运行元数据、严重度/问题码计数、文档表、实体字段表、来源信息和问题表。Markdown 单元格会转义 `|` 并折叠换行，适合直接审阅或粘贴到工单。
+包含运行元数据、严重度/问题码计数、文档表、实体字段表、实体契约结论与逐字段证据表、来源信息和问题表。Markdown 单元格会转义 `|` 并折叠换行，适合直接审阅或粘贴到工单。
 
 ## 自包含 HTML 报告
 
 - 所有 CSS 内嵌在 `<style>` 中。
 - 不引用 CDN、远程字体、外部脚本、外部图片或远程样式。
 - 所有动态文本由 Jinja 自动转义。
-- 展示运行信息、计数、文档、实体字段、来源 locator、证据哈希和问题清单。
+- 展示运行信息、计数、文档、实体字段、实体核验结论与字段证据、来源 locator、证据哈希和问题清单。
 - 报告只在本地生成，不包含外部链接。
 
 ## Golden 摘要
@@ -83,7 +90,7 @@
 - schema 版本、固定时间和契约 SHA-256；
 - 全部计数；
 - 文档路径、哈希、解析状态和重复来源；
-- 实体 ID、主类型、主键、类型、来源数量和冲突字段；
+- 实体 ID、主类型、主键、类型、来源数量、冲突字段和核验结论（verdict/mode/reasons 与逐字段状态及 annotation_id）；
 - 问题 ID、代码、严重度、文档、locator 和字段。
 
 校验：

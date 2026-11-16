@@ -4,7 +4,7 @@
 <h1>Entities</h1>
 <p class="meta">Merged entity clusters for run <code>{{ run.run_id }}</code>.</p>
 <table>
-  <thead><tr><th>Entity ID</th><th>Primary type</th><th>Types</th><th>Key</th><th>Sources</th><th>Conflicts</th></tr></thead>
+  <thead><tr><th>Entity ID</th><th>Primary type</th><th>Types</th><th>Key</th><th>Sources</th><th>Conflicts</th><th>Contract verdict</th></tr></thead>
   <tbody>
   {% for entity in entities %}
     <tr>
@@ -14,9 +14,10 @@
       <td class="mono">{{ entity.key }}</td>
       <td>{{ entity.source_count }}</td>
       <td class="mono">{{ entity.conflicts|join(", ") or "—" }}</td>
+      <td class="mono">{{ entity.verification.verdict if entity.verification else "—" }}{% if entity.verification %} <span class="meta">({{ entity.verification.mode }})</span>{% endif %}</td>
     </tr>
   {% else %}
-    <tr><td colspan="6">No entities.</td></tr>
+    <tr><td colspan="7">No entities.</td></tr>
   {% endfor %}
   </tbody>
 </table>

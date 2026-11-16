@@ -7,6 +7,44 @@
   <span class="meta">key {{ entity.key }}</span>
 </p>
 {% if entity.identifier %}<p class="meta">Normalized identifier: <code>{{ entity.identifier }}</code></p>{% endif %}
+{% if entity.verification %}
+<h2>Contract verification</h2>
+<p>
+  Verdict: <strong>{{ entity.verification.verdict }}</strong>
+  <span class="meta">mode {{ entity.verification.mode }}{% if entity.verification.reasons %} · reasons {{ entity.verification.reasons|join(", ") }}{% endif %}</span>
+</p>
+<p class="meta">
+  Eligible sources: {{ entity.verification.eligible_annotation_ids|join(", ") or "—" }}
+  {% if entity.verification.ineligible_annotation_ids %}
+  · ineligible: {{ entity.verification.ineligible_annotation_ids|join(", ") }}
+  {% endif %}
+</p>
+<table>
+  <thead><tr><th>Contract type</th><th>Required field</th><th>Field verdict</th><th>Annotation IDs</th><th>Locators</th><th>Fragment SHA-256</th></tr></thead>
+  <tbody>
+  {% for type_result in entity.verification.type_results %}
+    {% for field_evidence in type_result.field_evidence %}
+    <tr>
+      <td class="mono">{{ type_result.entity_type }}</td>
+      <td class="mono">{{ field_evidence.field }}</td>
+      <td class="mono">{{ field_evidence.status }}</td>
+      <td class="mono">{{ field_evidence.annotation_ids|join(", ") or "—" }}</td>
+      <td class="mono">{{ field_evidence.locators|join(", ") or "—" }}</td>
+      <td class="mono">{% for digest in field_evidence.fragment_sha256 %}{{ digest[:16] }}…{% if not loop.last %}, {% endif %}{% else %}—{% endfor %}</td>
+    </tr>
+    {% endfor %}
+  {% endfor %}
+  </tbody>
+</table>
+{% if entity.verification.failed_extractions %}
+<p class="warn">Failed extraction slots: {{ entity.verification.failed_extractions|length }}</p>
+<ul>
+  {% for slot in entity.verification.failed_extractions %}
+  <li class="mono">{{ slot.document }} · {{ slot.syntax }} · {{ slot.locator }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endif %}
 {% if entity.conflicts %}
   <p class="warn">Conflicting fields: {{ entity.conflicts|join(", ") }}</p>
 {% endif %}

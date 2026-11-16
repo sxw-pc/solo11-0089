@@ -74,6 +74,32 @@
       <span class="meta">key {{ entity.key }}</span>
     </p>
     <p class="meta">{{ entity.sources|length }} source annotation(s); {{ entity.fields|length }} field(s).</p>
+    {% if entity.verification %}
+      {% set verdict = entity.verification.verdict %}
+      <p>
+        Contract verdict:
+        {% if verdict == "pass" %}<span class="chip" style="color:var(--accent);font-weight:600;">{{ verdict }}</span>
+        {% elif verdict == "ineligible" %}<span class="chip warn">{{ verdict }}</span>
+        {% else %}<span class="chip error">{{ verdict }}</span>{% endif %}
+        <span class="meta">mode {{ entity.verification.mode }}{% if entity.verification.reasons %} · {{ entity.verification.reasons|join(", ") }}{% endif %}</span>
+      </p>
+      <table>
+        <thead><tr><th>Contract type</th><th>Required field</th><th>Field verdict</th><th>Evidence annotations</th><th>Locators</th></tr></thead>
+        <tbody>
+        {% for type_result in entity.verification.type_results %}
+          {% for field_evidence in type_result.field_evidence %}
+          <tr>
+            <td class="mono">{{ type_result.entity_type }}</td>
+            <td class="mono">{{ field_evidence.field }}</td>
+            <td class="{% if field_evidence.status in ('conflict', 'missing', 'ineligible') %}error{% elif field_evidence.status == 'complementary' %}warn{% endif %}">{{ field_evidence.status }}</td>
+            <td class="mono">{% for annotation_id in field_evidence.annotation_ids %}{{ annotation_id }}{% if not loop.last %}, {% endif %}{% else %}—{% endfor %}</td>
+            <td class="mono">{% for locator in field_evidence.locators %}{{ locator }}{% if not loop.last %}, {% endif %}{% else %}—{% endfor %}</td>
+          </tr>
+          {% endfor %}
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
     {% if entity.conflicts %}
       <p class="warn">Conflicting fields: {% for item in entity.conflicts %}<code>{{ item }}</code>{% if not loop.last %}, {% endif %}{% endfor %}</p>
     {% endif %}

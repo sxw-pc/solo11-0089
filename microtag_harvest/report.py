@@ -75,6 +75,15 @@ def report_markdown(report: dict[str, Any]) -> str:
         lines.append(f"- Types: {', '.join(entity['types'])}")
         lines.append(f"- Key: `{_md_cell(entity['key'])}`")
         lines.append(f"- Sources: {len(entity['sources'])}")
+        verification = entity.get("verification")
+        if verification:
+            reason_text = (
+                f" ({', '.join(verification['reasons'])})" if verification["reasons"] else ""
+            )
+            lines.append(
+                f"- Contract verdict: **{verification['verdict']}** "
+                f"[mode: {verification['mode']}]{reason_text}"
+            )
         if entity["conflicts"]:
             lines.append(f"- Conflicts: {', '.join(f'`{item}`' for item in entity['conflicts'])}")
         lines.append("")
@@ -86,6 +95,18 @@ def report_markdown(report: dict[str, Any]) -> str:
                     f"| `{_md_cell(field_name)}` | `{_md_cell(value['value'])}` | "
                     f"{value['syntax']} | `{_md_cell(value['document'])}` |"
                 )
+        if verification and verification.get("type_results"):
+            lines.append("")
+            lines.append("| Contract type | Required field | Field verdict | Annotations |")
+            lines.append("|---|---|---|---|")
+            for type_result in verification["type_results"]:
+                for field_evidence in type_result["field_evidence"]:
+                    lines.append(
+                        f"| `{_md_cell(type_result['entity_type'])}` | "
+                        f"`{_md_cell(field_evidence['field'])}` | "
+                        f"{field_evidence['status']} | "
+                        f"{', '.join(f'`{_md_cell(item)}`' for item in field_evidence['annotation_ids']) or '—'} |"
+                    )
         lines.append("")
     lines.extend(["## Issues", "", "| Severity | Code | Document | Locator | Field |",
                   "|---|---|---|---|---|"])
@@ -139,6 +160,25 @@ def golden_summary(report: dict[str, Any]) -> dict[str, Any]:
                 "types": entity["types"],
                 "source_count": len(entity["sources"]),
                 "conflicts": entity["conflicts"],
+                "verification": (
+                    {
+                        "verdict": entity["verification"]["verdict"],
+                        "mode": entity["verification"]["mode"],
+                        "reasons": entity["verification"]["reasons"],
+                        "field_evidence": [
+                            {
+                                "entity_type": type_result["entity_type"],
+                                "field": field_evidence["field"],
+                                "status": field_evidence["status"],
+                                "annotation_ids": field_evidence["annotation_ids"],
+                            }
+                            for type_result in entity["verification"]["type_results"]
+                            for field_evidence in type_result["field_evidence"]
+                        ],
+                    }
+                    if entity.get("verification")
+                    else None
+                ),
             }
             for entity in report["entities"]
         ],

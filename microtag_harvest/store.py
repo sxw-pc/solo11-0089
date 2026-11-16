@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS entities (
   fields_json TEXT NOT NULL,
   conflicts_json TEXT NOT NULL,
   sources_json TEXT NOT NULL,
+  verification_json TEXT NOT NULL DEFAULT '{}',
   PRIMARY KEY (run_id, entity_id)
 );
 CREATE TABLE IF NOT EXISTS entity_sources (
@@ -79,6 +80,32 @@ CREATE TABLE IF NOT EXISTS entity_sources (
   entity_id TEXT NOT NULL,
   annotation_id TEXT NOT NULL REFERENCES annotations(annotation_id),
   PRIMARY KEY (run_id, entity_id, annotation_id),
+  FOREIGN KEY (run_id, entity_id) REFERENCES entities(run_id, entity_id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS entity_verification (
+  run_id TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  verdict TEXT NOT NULL,
+  mode TEXT NOT NULL,
+  reasons_json TEXT NOT NULL,
+  eligible_annotation_ids_json TEXT NOT NULL,
+  ineligible_annotation_ids_json TEXT NOT NULL,
+  failed_extractions_json TEXT NOT NULL,
+  PRIMARY KEY (run_id, entity_id),
+  FOREIGN KEY (run_id, entity_id) REFERENCES entities(run_id, entity_id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS entity_field_evidence (
+  run_id TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  entity_type TEXT NOT NULL,
+  field_name TEXT NOT NULL,
+  status TEXT NOT NULL,
+  annotation_ids_json TEXT NOT NULL,
+  locators_json TEXT NOT NULL,
+  fragment_sha256_json TEXT NOT NULL,
+  values_json TEXT NOT NULL,
+  position INTEGER NOT NULL,
+  PRIMARY KEY (run_id, entity_id, entity_type, field_name),
   FOREIGN KEY (run_id, entity_id) REFERENCES entities(run_id, entity_id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS issues (
@@ -106,6 +133,8 @@ CREATE TABLE IF NOT EXISTS reports (
 );
 CREATE INDEX IF NOT EXISTS idx_issues_code ON issues(run_id, code);
 CREATE INDEX IF NOT EXISTS idx_annotations_document ON annotations(document_sha256);
+CREATE INDEX IF NOT EXISTS idx_field_evidence_status
+  ON entity_field_evidence(run_id, status);
 """
 
 
@@ -193,18 +222,25 @@ def persist(result: "PipelineResult", report_artifacts: Iterable[dict[str, Any]]
                      annotation.fragment, annotation.base_url, run["run_id"]),
                 )
             connection.execute("DELETE FROM entity_sources WHERE run_id=?", (run["run_id"],))
+            connection.execute(
+                "DELETE FROM entity_field_evidence WHERE run_id=?", (run["run_id"],)
+            )
+            connection.execute(
+                "DELETE FROM entity_verification WHERE run_id=?", (run["run_id"],)
+            )
             connection.execute("DELETE FROM entities WHERE run_id=?", (run["run_id"],))
             for entity in result.entities:
                 entity_dict = entity.to_dict()
+                verification = entity_dict.get("verification") or {}
                 connection.execute(
                     """INSERT INTO entities
                     (run_id, entity_id, primary_type, types_json, key, identifier,
-                     fields_json, conflicts_json, sources_json)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                     fields_json, conflicts_json, sources_json, verification_json)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                     (run["run_id"], entity.entity_id, entity.primary_type,
                      _json(list(entity.types)), entity.key, entity.identifier,
                      _json(entity_dict["fields"]), _json(list(entity.conflicts)),
-                     _json(entity.source_records())),
+                     _json(entity.source_records()), _json(verification)),
                 )
                 for source in entity.sources:
                     connection.execute(
@@ -212,6 +248,38 @@ def persist(result: "PipelineResult", report_artifacts: Iterable[dict[str, Any]]
                         (run_id, entity_id, annotation_id) VALUES (?, ?, ?)""",
                         (run["run_id"], entity.entity_id, source.annotation_id),
                     )
+                if entity.verification is not None:
+                    connection.execute(
+                        """INSERT INTO entity_verification
+                        (run_id, entity_id, verdict, mode, reasons_json,
+                         eligible_annotation_ids_json, ineligible_annotation_ids_json,
+                         failed_extractions_json)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                        (run["run_id"], entity.entity_id,
+                         entity.verification.verdict, entity.verification.mode,
+                         _json(list(entity.verification.reasons)),
+                         _json(list(entity.verification.eligible_annotation_ids)),
+                         _json(list(entity.verification.ineligible_annotation_ids)),
+                         _json([dict(item) for item in entity.verification.failed_extractions])),
+                    )
+                    position = 0
+                    for type_result in entity.verification.type_results:
+                        for field_evidence in type_result.field_evidence:
+                            connection.execute(
+                                """INSERT INTO entity_field_evidence
+                                (run_id, entity_id, entity_type, field_name, status,
+                                 annotation_ids_json, locators_json, fragment_sha256_json,
+                                 values_json, position)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                                (run["run_id"], entity.entity_id,
+                                 type_result.entity_type, field_evidence.field,
+                                 field_evidence.status,
+                                 _json(list(field_evidence.annotation_ids)),
+                                 _json(list(field_evidence.locators)),
+                                 _json(list(field_evidence.fragment_sha256)),
+                                 _json(list(field_evidence.values)), position),
+                            )
+                            position += 1
             connection.execute("DELETE FROM issues WHERE run_id=?", (run["run_id"],))
             for issue in result.issues:
                 issue_dict = issue.to_dict()
@@ -237,5 +305,6 @@ def persist(result: "PipelineResult", report_artifacts: Iterable[dict[str, Any]]
         connection.close()
 
 from .queries import (  # noqa: E402,F401  (read-only API re-export)
-    get_entity, get_run, latest_run, list_documents, list_entities, list_issues, report_rows,
+    get_entity, get_run, latest_run, list_documents, list_entities,
+    list_field_evidence, list_issues, report_rows,
 )

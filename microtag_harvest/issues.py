@@ -29,6 +29,9 @@ ISSUE_REGISTRY: dict[str, tuple[str, str]] = {
     "ENTITY_DUPLICATE_ID": ("warn", "The same document and syntax repeat an @id."),
     "MULTI_SYNTAX_CONFLICT": ("warn", "Syntaxes describe one entity with conflicting scalar values."),
     "FIELD_VALUE_CONFLICT": ("warn", "Merged sources provide incompatible values for a field."),
+    "ENTITY_REQUIREMENT_MISSING": ("error", "An entity still lacks a required field after merging eligible sources."),
+    "ENTITY_REQUIREMENT_CONFLICT": ("error", "Conflicting field values block an entity contract verdict."),
+    "ENTITY_VERIFICATION_INELIGIBLE": ("warn", "No eligible parsed source can establish the entity contract verdict."),
     "DANGLING_REFERENCE": ("warn", "An entity reference has no matching normalized @id."),
     "REFERENCE_CYCLE": ("warn", "Entity references form a cycle."),
 }

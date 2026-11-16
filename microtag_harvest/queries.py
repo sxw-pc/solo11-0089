@@ -54,7 +54,40 @@ def list_entities(connection: sqlite3.Connection, run_id: str) -> list[dict[str,
         item["types"] = _loads(item.pop("types_json"))
         item["conflicts"] = _loads(item.pop("conflicts_json"))
         item["sources"] = _loads(item.pop("sources_json"))
+        item["verification"] = _loads(item.pop("verification_json"))
         item.pop("fields_json", None)
+        results.append(item)
+    return results
+
+
+def list_field_evidence(
+    connection: sqlite3.Connection,
+    run_id: str,
+    entity_id: str | None = None,
+    status: str | None = None,
+) -> list[dict[str, Any]]:
+    clauses = ["run_id=?"]
+    params: list[Any] = [run_id]
+    if entity_id:
+        clauses.append("entity_id=?")
+        params.append(entity_id)
+    if status:
+        clauses.append("status=?")
+        params.append(status)
+    rows = connection.execute(
+        f"""SELECT * FROM entity_field_evidence WHERE {' AND '.join(clauses)}
+        ORDER BY entity_id, position""",
+        params,
+    ).fetchall()
+    results: list[dict[str, Any]] = []
+    for row in rows:
+        item = dict(row)
+        for key in (
+            "annotation_ids_json", "locators_json", "fragment_sha256_json",
+            "values_json", "reasons_json",
+        ):
+            if key in item:
+                item[key.removesuffix("_json")] = _loads(item.pop(key))
         results.append(item)
     return results
 
@@ -71,6 +104,22 @@ def get_entity(connection: sqlite3.Connection, run_id: str,
     result["fields"] = _loads(result.pop("fields_json"))
     result["conflicts"] = _loads(result.pop("conflicts_json"))
     result["sources"] = _loads(result.pop("sources_json"))
+    result["verification"] = _loads(result.pop("verification_json"))
+    verification_row = connection.execute(
+        "SELECT * FROM entity_verification WHERE run_id=? AND entity_id=?",
+        (run_id, entity_id),
+    ).fetchone()
+    if verification_row is not None:
+        verification = dict(verification_row)
+        for key in (
+            "reasons_json", "eligible_annotation_ids_json",
+            "ineligible_annotation_ids_json", "failed_extractions_json",
+        ):
+            verification[key.removesuffix("_json")] = _loads(verification.pop(key))
+        result["verification_summary"] = verification
+    result["field_evidence"] = list_field_evidence(
+        connection, run_id, entity_id=entity_id
+    )
     source_rows = connection.execute(
         """SELECT a.annotation_id, a.document_path, a.syntax, a.locator,
                   a.fragment_sha256, a.fragment, a.fields_json

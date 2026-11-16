@@ -10,6 +10,7 @@
 - 对完成采集的页面做页内语义标注抽取、契约质检、实体去重和审计。
 - 在无网络环境中复现同一批次的抽取结果、问题清单和 golden 摘要。
 - 用声明式契约驱动字段必填、类型、格式、枚举和未知字段策略。
+- 在合并后的实体上做实体级契约核验：联合（joint）模式允许跨语法/跨文档来源互补满足必填字段，独立声明（independent）模式要求每条来源自完整；字段缺失、互补满足与冲突未裁定分别留证，冲突值在两种模式下都不能凑齐通过。
 
 不适用，也不实现：
 
@@ -114,7 +115,7 @@ pytest -q
 make test
 ```
 
-测试完全离线，使用 `tmp_path` 生成临时输出，不依赖当前时间、当前工作目录或随机数。覆盖 JSON-LD 数组与 `@graph`、非法 JSON、远程 context 告警、Microdata 嵌套、RDFa 基础属性、OpenGraph/Twitter Card、契约策略、归一化、实体合并、问题码、SQLite 幂等、报告确定性、golden、compare、只读 Web 与转义展示。
+测试完全离线，使用 `tmp_path` 生成临时输出，不依赖当前时间、当前工作目录或随机数。覆盖 JSON-LD 数组与 `@graph`、非法 JSON、远程 context 告警、Microdata 嵌套、RDFa 基础属性、OpenGraph/Twitter Card、契约策略、归一化、实体合并、实体级核验（联合/独立双模式、冲突阻断、缺失与未知/解析失败区分）、问题码、SQLite 幂等与证据回读一致、报告确定性、golden、compare、只读 Web 与转义展示。
 
 ## Fixture 来源与合规
 

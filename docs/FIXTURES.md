@@ -24,7 +24,9 @@
 
 ## 合成契约
 
-`fixtures/contracts/site.yaml` 声明 `Organization`、`Person`、`Product`、`Event`、`Article` 和 `Metadata`。`Metadata` 使用 `unknown_fields: ignore`，其余类型使用全局 `unknown_field: warn`；未知类型策略为 `error`。
+`fixtures/contracts/site.yaml` 声明 `Organization`、`Person`、`Product`、`Event`、`Article` 和 `Metadata`。`Metadata` 使用 `unknown_fields: ignore`，其余类型使用全局 `unknown_field: warn`；未知类型策略为 `error`。该契约显式启用 `entity_verification.mode: joint`（联合模式，允许跨语法/跨文档互补满足必填字段）。
+
+`fixtures/contracts/site_independent.yaml` 声明相同的类型与字段，但启用 `mode: independent`（独立声明模式）：每条有资格来源必须自己完整，互补来源不能让实体通过。两个契约配合同一输入即可在测试中验证业务结论随授权模式切换，而逐来源审计问题在两种模式下都保留。
 
 契约字段覆盖字符串、URL、日期、对象、数组和枚举，并包含必填和推荐字段。
 

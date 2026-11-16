@@ -14,8 +14,8 @@
 | `parsers/microdata.py` | `itemscope`/`itemtype`/`itemprop`/嵌套 item/`itemid`。 |
 | `parsers/rdfa.py` | `typeof`/`property`/`about`/`resource`/`vocab` 基础子集。 |
 | `parsers/meta.py` | OpenGraph 与 Twitter Card 统一为 `Metadata` 候选字段。 |
-| `contracts.py` | YAML 解析、字段/类型/格式/枚举/未知字段策略、行号错误、契约快照摘要。 |
-| `validation.py` | 对候选实体执行契约字段校验并生成问题。 |
+| `contracts.py` | YAML 解析、字段/类型/格式/枚举/未知字段策略、实体核验模式（joint/independent）、行号错误、契约快照摘要。 |
+| `validation.py` | 逐来源契约字段校验，以及合并后绑定 `entity_id` 的实体级核验结论与字段级证据（缺失/互补/冲突/无资格不可混同）。 |
 | `normalize.py` | 空白折叠、URL base 解析与 fragment 移除、ISO 日期、标识符和嵌套值归一化。 |
 | `merge.py` | 同页/跨页实体分组、字段合并、冲突保留、实体 ID 生成。 |
 | `audit.py` | 重复 `@id`、悬空引用和有向引用环检测。 |
@@ -30,18 +30,20 @@
 
 1. **扫描**：`scanner.discover` 按相对路径排序发现 HTML，计算 SHA-256，跳过默认忽略目录（`out`、`.git` 等），将后续同哈希文档标记为重复。
 2. **抽取**：每份文档以 lxml 解析，依次运行 JSON-LD、Microdata、RDFa、Meta 抽取器。任何单文件或单抽取器失败只记录问题，不中断批次。
-3. **契约校验**：候选实体的每个类型都按 YAML 契约检查必填、推荐、类型、格式、枚举、未知字段和未知类型。
+3. **契约校验（逐来源）**：候选实体的每个类型都按 YAML 契约检查必填、推荐、类型、格式、枚举、未知字段和未知类型；问题绑定到具体标注。
 4. **归一化**：文本折叠空白；URL 以文档 `<base href>` 解析并移除 fragment；标识符保留 fragment；日期转换为 ISO-8601；嵌套对象/数组递归处理。
 5. **合并**：有 `@id` 的候选跨文档合并；无 `@id` 的候选仅在文档内按 `(类型, name/headline)` 合并；无名称时保持独立。冲突值全部保留，不做静默覆盖。
-6. **问题定位**：为每个问题记录文档、语法、locator、实体类型、字段、证据 SHA-256 和确定性 issue ID；引用图检测悬空链接与环。
-7. **入库**：写入 `runs`、`documents`、`run_documents`、`annotations`、`entities`、`entity_sources`、`issues`、`contracts`、`reports`。标注唯一约束保证重跑不增长。
-8. **报告**：生成排序稳定的 JSON、Markdown 和自包含 HTML；计算 golden 摘要与契约/参数/报告哈希。
-9. **复核**：Flask 只读查询最近一次运行，展示文档、实体、字段来源、原始片段（自动转义）和问题过滤。
+6. **实体级核验**：合并分组与冲突驱动 `verify_entities` 产出实体结论（`pass` / `fail_missing` / `fail_conflict` / `ineligible`）和字段证据（`present` / `complementary` / `missing` / `conflict` / `ineligible`）。联合模式允许互补满足，独立模式要求每条来源自完整；两种模式都禁止用冲突值凑齐。只有成功解析且类型在契约声明的来源有资格参与。
+7. **问题定位**：为每个问题记录文档、语法、locator、实体类型、字段、证据 SHA-256 和确定性 issue ID；引用图检测悬空链接与环。
+8. **入库**：写入 `runs`、`documents`、`run_documents`、`annotations`、`entities`、`entity_sources`、`entity_verification`、`entity_field_evidence`、`issues`、`contracts`、`reports`。标注唯一约束保证重跑不增长；核验证据与报告指向同一组 annotation_id/locator/fragment_sha256。
+9. **报告**：生成排序稳定的 JSON、Markdown 和自包含 HTML（含实体结论与字段证据表）；计算 golden 摘要与契约/参数/报告哈希。
+10. **复核**：Flask 只读查询最近一次运行，展示文档、实体、字段来源、核验结论、原始片段（自动转义）和问题过滤。
 
 ## 关键数据结构
 
 - **候选标注**：文档路径、文档 SHA-256、语法、locator、片段与片段哈希、类型列表、标识符、字段值列表、引用列表、base URL。
-- **合并实体**：确定性 12 位实体 ID、类型列表、主类型、规范化主键、所有字段值及其来源、来源标注、冲突字段。
+- **合并实体**：确定性 12 位实体 ID、类型列表、主类型、规范化主键、所有字段值及其来源、来源标注、冲突字段、实体核验结论。
+- **实体核验**：实体结论与模式、有资格/无资格 annotation_id、解析失败槽位、逐类型必填字段证据（字段状态、提供值的 annotation_id/locator/fragment_sha256）。
 - **问题**：稳定问题码、严重度、文档/语法/locator/实体类型/字段、证据哈希、详情。
 
 实体 ID 由 `sha1(主类型 + "|" + 规范化主键)` 的前 12 位组成。主键优先为 `@id:`，其次为文档范围名称，最后为 locator 范围。
