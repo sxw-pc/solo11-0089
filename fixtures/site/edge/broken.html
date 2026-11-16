@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <base href="https://example.invalid/edge/">
+  <title>Deliberately broken fixture</title>
+  <meta property="og:title" content="Broken fixture">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.invalid/edge/broken.html">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">
+  {"@context": "https://example.invalid/vocab", "@type": "Organization", "name": "Broken"
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://example.invalid/vocab",
+    "@type": "Recipe",
+    "name": "Sample Soup",
+    "recipeIngredient": ["water"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://example.invalid/vocab",
+    "@type": "Organization",
+    "@id": "https://example.invalid/edge#incomplete",
+    "name": "Incomplete Sample Org"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://example.invalid/vocab",
+    "@type": "Product",
+    "@id": "https://example.invalid/edge#bad-product",
+    "name": 42,
+    "sku": "",
+    "offers": "not-an-object",
+    "url": "ftp://example.invalid/not-allowed",
+    "category": "gadgets",
+    "color": "green"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://example.invalid/contexts/remote.jsonld",
+    "@type": "Organization",
+    "@id": "https://example.invalid/edge#remote",
+    "name": "Remote Context Sample",
+    "url": "/edge/broken.html"
+  }
+  </script>
+  <script type="application/ld+json">
+    {"@context": "https://example.invalid/vocab", "name": "No type here"}
+  </script>
+</head>
+<body>
+  <div itemscope>
+    <span itemprop="name">Untyped Microdata</span>
+  </div>
+</body>
+</html>

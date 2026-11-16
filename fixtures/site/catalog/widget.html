@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <base href="https://example.invalid/catalog/">
+  <title>Sample Widget</title>
+  <meta property="og:title" content="Sample Widget">
+  <meta property="og:type" content="product">
+  <meta property="og:url" content="https://example.invalid/catalog/widget.html">
+  <meta property="og:image" content="/media/widget.png">
+  <meta property="og:description" content="Synthetic product fixture.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sample Widget">
+  <script type="application/ld+json">
+  {
+    "@context": "https://example.invalid/vocab",
+    "@graph": [
+      {
+        "@type": "Product",
+        "@id": "https://example.invalid/catalog/widget#product",
+        "name": "Sample Widget",
+        "sku": "WDG-001",
+        "description": "A synthetic widget used for offline parser tests.",
+        "image": "https://example.invalid/media/widget.png",
+        "url": "https://example.invalid/catalog/widget.html",
+        "category": "widgets",
+        "offers": {
+          "@type": "Offer",
+          "@id": "https://example.invalid/catalog/widget#offer",
+          "price": "19.00",
+          "priceCurrency": "USD",
+          "availability": "https://example.invalid/vocab/InStock"
+        },
+        "brand": {"@type": "Brand", "name": "Sample Works"}
+      },
+      {
+        "@type": "Product",
+        "@id": "https://example.invalid/catalog/widget#product",
+        "name": "Sample Widget",
+        "sku": "WDG-001",
+        "description": "A synthetic widget used for offline parser tests.",
+        "image": "https://example.invalid/media/widget.png",
+        "url": "https://example.invalid/catalog/widget.html",
+        "category": "widgets",
+        "offers": {
+          "@type": "Offer",
+          "@id": "https://example.invalid/catalog/widget#offer",
+          "price": "19.00",
+          "priceCurrency": "USD",
+          "availability": "https://example.invalid/vocab/InStock"
+        },
+        "brand": {"@type": "Brand", "name": "Sample Works"}
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <main>
+    <article itemscope itemtype="https://example.invalid/vocab/Product"
+             itemid="https://example.invalid/catalog/widget#product">
+      <h1 itemprop="name">Sample Widget (Microdata)</h1>
+      <img itemprop="image" src="/media/widget.png" alt="Synthetic widget illustration">
+      <p itemprop="description">A synthetic widget used for offline parser tests.</p>
+      <span itemprop="sku">WDG-001</span>
+      <a itemprop="url" href="widget.html">Product page</a>
+      <div itemprop="offers" itemscope>
+        <span itemprop="name">Direct offer</span>
+        <span itemprop="price">19.00</span>
+        <span itemprop="priceCurrency">USD</span>
+        <link itemprop="availability" href="https://example.invalid/vocab/InStock">
+      </div>
+    </article>
+  </main>
+</body>
+</html>

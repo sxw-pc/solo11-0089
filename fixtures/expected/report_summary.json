@@ -1,0 +1,488 @@
+{
+  "contract_sha256": "2020e4b452bebb9a99193f9c48383fad1668795c3d1f3ecd6a2ae473885c8496",
+  "counts": {
+    "annotations": 17,
+    "documents": 6,
+    "entities": 13,
+    "issues": {
+      "by_code": {
+        "CONTRACT_ENUM_INVALID": 1,
+        "CONTRACT_FORMAT_INVALID": 2,
+        "CONTRACT_MISSING_REQUIRED": 2,
+        "CONTRACT_RECOMMENDED_MISSING": 3,
+        "CONTRACT_TYPE_MISMATCH": 2,
+        "CONTRACT_UNKNOWN_FIELD": 1,
+        "CONTRACT_UNKNOWN_TYPE": 1,
+        "DANGLING_REFERENCE": 1,
+        "DOC_DUPLICATE_CONTENT": 1,
+        "ENTITY_DUPLICATE_ID": 1,
+        "FIELD_VALUE_CONFLICT": 4,
+        "JSONLD_ENTITY_WITHOUT_TYPE": 1,
+        "MICRODATA_ITEM_WITHOUT_TYPE": 1,
+        "MULTI_SYNTAX_CONFLICT": 3,
+        "PARSE_JSONLD_INVALID": 1,
+        "REFERENCE_CYCLE": 1,
+        "REMOTE_CONTEXT_NOT_LOADED": 8
+      },
+      "by_severity": {
+        "error": 9,
+        "info": 1,
+        "warn": 24
+      },
+      "total": 34
+    }
+  },
+  "documents": [
+    {
+      "duplicate_of": null,
+      "parse_status": "ok",
+      "path": "catalog/widget.html",
+      "sha256": "a485d1b87a4b92e8fecbe6527e53d147ededcdf76383dfec373652965a7da269"
+    },
+    {
+      "duplicate_of": null,
+      "parse_status": "ok",
+      "path": "edge/broken.html",
+      "sha256": "7b72d9cc5ae993e9ecaf7ab4584481b024e13343e1634fe61592b122cbfbbcd9"
+    },
+    {
+      "duplicate_of": null,
+      "parse_status": "ok",
+      "path": "edge/copy-a.html",
+      "sha256": "d4ea21c087079814670762961e11608937e267a933707e7aebf867957fc5a5e9"
+    },
+    {
+      "duplicate_of": "edge/copy-a.html",
+      "parse_status": "ok",
+      "path": "edge/copy-b.html",
+      "sha256": "d4ea21c087079814670762961e11608937e267a933707e7aebf867957fc5a5e9"
+    },
+    {
+      "duplicate_of": null,
+      "parse_status": "ok",
+      "path": "events/spring-meetup.html",
+      "sha256": "5f053893f814944b2f5be32ad53557e0d3ee8974f560ff29725ff8197adb6a55"
+    },
+    {
+      "duplicate_of": null,
+      "parse_status": "ok",
+      "path": "people/avery.html",
+      "sha256": "3b96aef574ee72c0d226eb54e712387c128b21a68d3638816e7cd4e3246e5398"
+    }
+  ],
+  "entities": [
+    {
+      "conflicts": [
+        "jobTitle"
+      ],
+      "entity_id": "011b4ccb2429",
+      "key": "@id:https://example.invalid/people/avery#person",
+      "primary_type": "Person",
+      "source_count": 2,
+      "types": [
+        "Person"
+      ]
+    },
+    {
+      "conflicts": [
+        "location"
+      ],
+      "entity_id": "0e499f517c26",
+      "key": "@id:https://example.invalid/events/spring#event",
+      "primary_type": "Event",
+      "source_count": 2,
+      "types": [
+        "Event"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "311c468bcc47",
+      "key": "name:catalog/widget.html:Sample Widget",
+      "primary_type": "Metadata",
+      "source_count": 1,
+      "types": [
+        "Metadata"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "31202f87e085",
+      "key": "name:edge/broken.html:Sample Soup",
+      "primary_type": "Recipe",
+      "source_count": 1,
+      "types": [
+        "Recipe"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "316122f71e8e",
+      "key": "@id:https://example.invalid/edge#remote",
+      "primary_type": "Organization",
+      "source_count": 1,
+      "types": [
+        "Organization"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "34b5c2c11172",
+      "key": "@id:https://example.invalid/events/spring#article",
+      "primary_type": "Article",
+      "source_count": 1,
+      "types": [
+        "Article"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "8c6908ee6129",
+      "key": "name:edge/broken.html:Broken fixture",
+      "primary_type": "Metadata",
+      "source_count": 1,
+      "types": [
+        "Metadata"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "af543e18eaed",
+      "key": "@id:https://example.invalid/org/sample-works",
+      "primary_type": "Organization",
+      "source_count": 1,
+      "types": [
+        "Organization"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "ba86c5e44b2c",
+      "key": "name:people/avery.html:Avery Example",
+      "primary_type": "Metadata",
+      "source_count": 1,
+      "types": [
+        "Metadata"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "c6555d4c0995",
+      "key": "@id:https://example.invalid/edge#bad-product",
+      "primary_type": "Product",
+      "source_count": 1,
+      "types": [
+        "Product"
+      ]
+    },
+    {
+      "conflicts": [
+        "name",
+        "offers"
+      ],
+      "entity_id": "c818e35c38a9",
+      "key": "@id:https://example.invalid/catalog/widget#product",
+      "primary_type": "Product",
+      "source_count": 3,
+      "types": [
+        "Product"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "c860673277a5",
+      "key": "name:events/spring-meetup.html:Spring Sample Meetup",
+      "primary_type": "Metadata",
+      "source_count": 1,
+      "types": [
+        "Metadata"
+      ]
+    },
+    {
+      "conflicts": [],
+      "entity_id": "f758dbafa6a4",
+      "key": "@id:https://example.invalid/edge#incomplete",
+      "primary_type": "Organization",
+      "source_count": 1,
+      "types": [
+        "Organization"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "code": "REMOTE_CONTEXT_NOT_LOADED",
+      "document": "catalog/widget.html",
+      "field": "",
+      "issue_id": "7f4438782da6",
+      "locator": "script[type=application/ld+json]#0",
+      "severity": "warn"
+    },
+    {
+      "code": "MULTI_SYNTAX_CONFLICT",
+      "document": "catalog/widget.html",
+      "field": "",
+      "issue_id": "d575326a2ba5",
+      "locator": "script[type=application/ld+json]#0/graph[0]",
+      "severity": "warn"
+    },
+    {
+      "code": "FIELD_VALUE_CONFLICT",
+      "document": "catalog/widget.html",
+      "field": "name",
+      "issue_id": "2f8eb3706b77",
+      "locator": "script[type=application/ld+json]#0/graph[0]#name",
+      "severity": "warn"
+    },
+    {
+      "code": "FIELD_VALUE_CONFLICT",
+      "document": "catalog/widget.html",
+      "field": "offers",
+      "issue_id": "63dacdca8d4e",
+      "locator": "script[type=application/ld+json]#0/graph[0]#offers",
+      "severity": "warn"
+    },
+    {
+      "code": "ENTITY_DUPLICATE_ID",
+      "document": "catalog/widget.html",
+      "field": "",
+      "issue_id": "3eb5daac1a4b",
+      "locator": "script[type=application/ld+json]#0/graph[1]",
+      "severity": "warn"
+    },
+    {
+      "code": "MICRODATA_ITEM_WITHOUT_TYPE",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "9308b58f70cd",
+      "locator": "/html/body[1]/div[1]",
+      "severity": "warn"
+    },
+    {
+      "code": "PARSE_JSONLD_INVALID",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "b960379473ba",
+      "locator": "script[type=application/ld+json]#0",
+      "severity": "error"
+    },
+    {
+      "code": "REMOTE_CONTEXT_NOT_LOADED",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "ab0f0c286608",
+      "locator": "script[type=application/ld+json]#1",
+      "severity": "warn"
+    },
+    {
+      "code": "CONTRACT_UNKNOWN_TYPE",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "d27fdc0b7fef",
+      "locator": "script[type=application/ld+json]#1/entity[0]",
+      "severity": "error"
+    },
+    {
+      "code": "REMOTE_CONTEXT_NOT_LOADED",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "31e1ddfb58dc",
+      "locator": "script[type=application/ld+json]#2",
+      "severity": "warn"
+    },
+    {
+      "code": "CONTRACT_MISSING_REQUIRED",
+      "document": "edge/broken.html",
+      "field": "url",
+      "issue_id": "a3d20bfc9c48",
+      "locator": "script[type=application/ld+json]#2/entity[0]",
+      "severity": "error"
+    },
+    {
+      "code": "CONTRACT_RECOMMENDED_MISSING",
+      "document": "edge/broken.html",
+      "field": "logo",
+      "issue_id": "0032c71388f9",
+      "locator": "script[type=application/ld+json]#2/entity[0]",
+      "severity": "warn"
+    },
+    {
+      "code": "REMOTE_CONTEXT_NOT_LOADED",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "b6222df6901c",
+      "locator": "script[type=application/ld+json]#3",
+      "severity": "warn"
+    },
+    {
+      "code": "CONTRACT_RECOMMENDED_MISSING",
+      "document": "edge/broken.html",
+      "field": "image",
+      "issue_id": "9985e058f741",
+      "locator": "script[type=application/ld+json]#3/entity[0]",
+      "severity": "warn"
+    },
+    {
+      "code": "CONTRACT_ENUM_INVALID",
+      "document": "edge/broken.html",
+      "field": "category",
+      "issue_id": "fb91a8a36440",
+      "locator": "script[type=application/ld+json]#3/entity[0]#category",
+      "severity": "error"
+    },
+    {
+      "code": "CONTRACT_UNKNOWN_FIELD",
+      "document": "edge/broken.html",
+      "field": "color",
+      "issue_id": "0ef8baa73daa",
+      "locator": "script[type=application/ld+json]#3/entity[0]#color",
+      "severity": "warn"
+    },
+    {
+      "code": "CONTRACT_TYPE_MISMATCH",
+      "document": "edge/broken.html",
+      "field": "name",
+      "issue_id": "3b3780610689",
+      "locator": "script[type=application/ld+json]#3/entity[0]#name",
+      "severity": "error"
+    },
+    {
+      "code": "CONTRACT_TYPE_MISMATCH",
+      "document": "edge/broken.html",
+      "field": "offers",
+      "issue_id": "006422e4c777",
+      "locator": "script[type=application/ld+json]#3/entity[0]#offers",
+      "severity": "error"
+    },
+    {
+      "code": "CONTRACT_FORMAT_INVALID",
+      "document": "edge/broken.html",
+      "field": "sku",
+      "issue_id": "4f22f6373c45",
+      "locator": "script[type=application/ld+json]#3/entity[0]#sku",
+      "severity": "error"
+    },
+    {
+      "code": "CONTRACT_MISSING_REQUIRED",
+      "document": "edge/broken.html",
+      "field": "sku",
+      "issue_id": "2e6a0623a619",
+      "locator": "script[type=application/ld+json]#3/entity[0]#sku",
+      "severity": "error"
+    },
+    {
+      "code": "CONTRACT_FORMAT_INVALID",
+      "document": "edge/broken.html",
+      "field": "url",
+      "issue_id": "69a85f3a6458",
+      "locator": "script[type=application/ld+json]#3/entity[0]#url",
+      "severity": "error"
+    },
+    {
+      "code": "REMOTE_CONTEXT_NOT_LOADED",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "cf950505baeb",
+      "locator": "script[type=application/ld+json]#4",
+      "severity": "warn"
+    },
+    {
+      "code": "CONTRACT_RECOMMENDED_MISSING",
+      "document": "edge/broken.html",
+      "field": "logo",
+      "issue_id": "0afaf4e3f9af",
+      "locator": "script[type=application/ld+json]#4/entity[0]",
+      "severity": "warn"
+    },
+    {
+      "code": "REMOTE_CONTEXT_NOT_LOADED",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "520cdefcca08",
+      "locator": "script[type=application/ld+json]#5",
+      "severity": "warn"
+    },
+    {
+      "code": "JSONLD_ENTITY_WITHOUT_TYPE",
+      "document": "edge/broken.html",
+      "field": "",
+      "issue_id": "1e3fa98cb573",
+      "locator": "script[type=application/ld+json]#5/entity[0]",
+      "severity": "warn"
+    },
+    {
+      "code": "DOC_DUPLICATE_CONTENT",
+      "document": "edge/copy-b.html",
+      "field": "",
+      "issue_id": "83d752954371",
+      "locator": "document",
+      "severity": "info"
+    },
+    {
+      "code": "REMOTE_CONTEXT_NOT_LOADED",
+      "document": "events/spring-meetup.html",
+      "field": "",
+      "issue_id": "9e203edca2f1",
+      "locator": "script[type=application/ld+json]#0",
+      "severity": "warn"
+    },
+    {
+      "code": "MULTI_SYNTAX_CONFLICT",
+      "document": "events/spring-meetup.html",
+      "field": "",
+      "issue_id": "810d3258d6a9",
+      "locator": "script[type=application/ld+json]#0/entity[0]",
+      "severity": "warn"
+    },
+    {
+      "code": "FIELD_VALUE_CONFLICT",
+      "document": "events/spring-meetup.html",
+      "field": "location",
+      "issue_id": "c3c2f7514984",
+      "locator": "script[type=application/ld+json]#0/entity[0]#location",
+      "severity": "warn"
+    },
+    {
+      "code": "REMOTE_CONTEXT_NOT_LOADED",
+      "document": "people/avery.html",
+      "field": "",
+      "issue_id": "6786fb94f573",
+      "locator": "script[type=application/ld+json]#0",
+      "severity": "warn"
+    },
+    {
+      "code": "DANGLING_REFERENCE",
+      "document": "people/avery.html",
+      "field": "",
+      "issue_id": "8bf0a6a8bccb",
+      "locator": "script[type=application/ld+json]#0[0]",
+      "severity": "warn"
+    },
+    {
+      "code": "MULTI_SYNTAX_CONFLICT",
+      "document": "people/avery.html",
+      "field": "",
+      "issue_id": "66cf34795b3d",
+      "locator": "script[type=application/ld+json]#0[0]",
+      "severity": "warn"
+    },
+    {
+      "code": "REFERENCE_CYCLE",
+      "document": "people/avery.html",
+      "field": "",
+      "issue_id": "5c0a2404afbb",
+      "locator": "script[type=application/ld+json]#0[0]",
+      "severity": "warn"
+    },
+    {
+      "code": "FIELD_VALUE_CONFLICT",
+      "document": "people/avery.html",
+      "field": "jobTitle",
+      "issue_id": "5123ddd92387",
+      "locator": "script[type=application/ld+json]#0[0]#jobTitle",
+      "severity": "warn"
+    }
+  ],
+  "now": "2026-01-01T00:00:00Z",
+  "schema_version": 1
+}

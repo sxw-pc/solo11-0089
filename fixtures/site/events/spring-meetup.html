@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <base href="https://example.invalid/events/">
+  <title>Spring Sample Meetup</title>
+  <meta property="og:title" content="Spring Sample Meetup">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://example.invalid/events/spring-meetup.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Spring Sample Meetup">
+  <script type="application/ld+json">
+  {
+    "@context": "https://example.invalid/vocab",
+    "@type": "Event",
+    "@id": "https://example.invalid/events/spring#event",
+    "name": "Spring Sample Meetup",
+    "startDate": "March 3, 2025",
+    "endDate": "2025-03-04",
+    "url": "/events/spring-meetup.html",
+    "description": "A synthetic meetup fixture for parser tests.",
+    "location": {
+      "@type": "Place",
+      "name": "Sample Hall",
+      "address": "1 Example Way, Example.invalid"
+    }
+  }
+  </script>
+</head>
+<body>
+  <main>
+    <div itemscope itemtype="https://example.invalid/vocab/Event"
+         itemid="https://example.invalid/events/spring#event">
+      <h1 itemprop="name">Spring Sample Meetup</h1>
+      <time itemprop="startDate" datetime="March 3, 2025">March 3</time>
+      <time itemprop="endDate" datetime="2025-03-04">March 4</time>
+      <a itemprop="url" href="spring-meetup.html">Event page</a>
+      <div itemprop="location" itemscope>
+        <span itemprop="name">Sample Hall</span>
+        <span itemprop="address">1 Example Way, Example.invalid</span>
+      </div>
+    </div>
+    <article vocab="https://example.invalid/vocab/" typeof="Article"
+             about="https://example.invalid/events/spring#article">
+      <h2 property="headline">Meetup notes</h2>
+      <a property="author" href="https://example.invalid/people/avery#person">Avery Example</a>
+      <time property="datePublished" datetime="2025-02-01">February 1, 2025</time>
+      <p property="description">Synthetic event notes.</p>
+      <a property="url" href="/events/spring-meetup.html">Permalink</a>
+    </article>
+  </main>
+</body>
+</html>

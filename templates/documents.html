@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Documents · Microtag Harvest{% endblock %}
+{% block content %}
+<h1>Documents</h1>
+<p class="meta">Relative path, byte hash, parse status, and duplicate marker from run <code>{{ run.run_id }}</code>.</p>
+<table>
+  <thead><tr><th>Path</th><th>SHA-256</th><th>Bytes</th><th>Status</th><th>Duplicate of</th><th>Error</th></tr></thead>
+  <tbody>
+  {% for document in documents %}
+    <tr>
+      <td class="mono">{{ document.path }}</td>
+      <td class="mono">{{ document.sha256 }}</td>
+      <td>{{ document.size }}</td>
+      <td>{{ document.parse_status }}</td>
+      <td class="mono">{{ document.duplicate_of or "—" }}</td>
+      <td class="mono">{{ document.error or "—" }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6">No documents.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Issues · Microtag Harvest{% endblock %}
+{% block content %}
+<h1>Issues</h1>
+<p class="meta">Run <code>{{ run.run_id }}</code> · {{ issues|length }} shown</p>
+<p class="filter">
+  Filter:
+  <a href="{{ url_for('issues') }}">all</a>
+  {% for item in ["error", "warn", "info"] %}
+    · <a href="{{ url_for('issues', severity=item) }}">{{ item }}</a>
+  {% endfor %}
+  {% if code %} · code <code>{{ code }}</code>{% endif %}
+</p>
+<table>
+  <thead><tr><th>Severity</th><th>Code</th><th>Document</th><th>Locator</th><th>Entity type</th><th>Field</th><th>Evidence SHA-256</th></tr></thead>
+  <tbody>
+  {% for issue in issues %}
+    <tr>
+      <td class="{{ issue.severity }}">{{ issue.severity }}</td>
+      <td class="mono">{{ issue.code }}</td>
+      <td class="mono">{{ issue.document_path or "—" }}</td>
+      <td class="mono">{{ issue.locator }}</td>
+      <td>{{ issue.entity_type or "—" }}</td>
+      <td class="mono">{{ issue.field_name or "—" }}</td>
+      <td class="mono">{{ issue.evidence_sha256[:20] }}…</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="7">No issues match this filter.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

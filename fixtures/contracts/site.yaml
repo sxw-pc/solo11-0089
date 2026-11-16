@@ -1,0 +1,69 @@
+name: sample-site
+version: 1
+unknown_type: error
+unknown_field: warn
+types:
+  Organization:
+    required: [name, url]
+    recommended: [logo]
+    fields:
+      name: {type: string, format: nonempty}
+      url: {type: url, format: uri}
+      logo: {type: url, format: uri}
+      email: {type: string, format: email}
+      member: {type: object}
+  Person:
+    required: [name]
+    recommended: [jobTitle, url]
+    fields:
+      name: {type: string, format: nonempty}
+      jobTitle: {type: string, format: nonempty}
+      url: {type: url, format: uri}
+      email: {type: string, format: email}
+      worksFor: {type: object}
+      knows: {type: object}
+      sameAs: {type: array}
+  Product:
+    required: [name, sku, offers]
+    recommended: [image]
+    fields:
+      name: {type: string, format: nonempty}
+      sku: {type: string, format: nonempty}
+      description: {type: string}
+      image: {type: url, format: uri}
+      url: {type: url, format: uri}
+      category: {type: string, enum: [widgets, tools, samples]}
+      offers: {type: object}
+      brand: {type: object}
+  Event:
+    required: [name, startDate, location]
+    recommended: [endDate]
+    fields:
+      name: {type: string, format: nonempty}
+      startDate: {type: date, format: iso8601}
+      endDate: {type: date, format: iso8601}
+      location: {type: object}
+      url: {type: url, format: uri}
+      description: {type: string}
+  Article:
+    required: [headline, author, datePublished]
+    recommended: [url]
+    fields:
+      headline: {type: string, format: nonempty}
+      author: {type: string, format: nonempty}
+      datePublished: {type: date, format: iso8601}
+      url: {type: url, format: uri}
+      description: {type: string}
+  Metadata:
+    unknown_fields: ignore
+    required: []
+    recommended: ["og:title", "twitter:card"]
+    fields:
+      "og:title": {type: string, format: nonempty}
+      "og:type": {type: string}
+      "og:url": {type: url, format: uri}
+      "og:description": {type: string}
+      "og:image": {type: url, format: uri}
+      "twitter:card": {type: string, enum: [summary, summary_large_image]}
+      "twitter:title": {type: string}
+      "twitter:description": {type: string}

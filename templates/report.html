@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Microtag Harvest report</title>
+  <style>
+    :root { color-scheme: light dark; --ink:#17202a; --muted:#5d6d7e; --line:#d6dbdf; --paper:#ffffff; --accent:#0b6e69; --bad:#a61b1b; --warn:#8a5a00; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:#f4f6f7; color:var(--ink); font:15px/1.55 "Segoe UI", system-ui, sans-serif; }
+    main { max-width:1120px; margin:0 auto; padding:32px 20px 64px; }
+    header { border-bottom:4px solid var(--accent); margin-bottom:24px; padding-bottom:14px; }
+    h1, h2, h3 { line-height:1.2; }
+    h1 { margin:0 0 8px; font-size:30px; }
+    h2 { margin-top:38px; border-bottom:1px solid var(--line); padding-bottom:6px; }
+    h3 { margin:26px 0 8px; font-size:17px; }
+    p, li { color:var(--ink); }
+    .meta { color:var(--muted); font-size:13px; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
+    .card { background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:14px; }
+    .card strong { display:block; font-size:26px; color:var(--accent); }
+    code, .mono { font-family:ui-monospace, "Cascadia Mono", Consolas, monospace; font-size:12px; }
+    table { width:100%; border-collapse:collapse; background:var(--paper); font-size:13px; }
+    th, td { border:1px solid var(--line); padding:7px 8px; text-align:left; vertical-align:top; }
+    th { background:#eaf2f1; }
+    .entity { background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:16px; margin:14px 0; }
+    .chip { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:1px 8px; margin:1px; font-size:12px; }
+    .error { color:var(--bad); font-weight:600; }
+    .warn { color:var(--warn); font-weight:600; }
+    .info { color:var(--muted); font-weight:600; }
+    details { margin-top:8px; }
+    footer { margin-top:48px; color:var(--muted); font-size:12px; border-top:1px solid var(--line); padding-top:14px; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Microtag Harvest</h1>
+    <p class="meta">Offline semantic annotation audit · run <code>{{ report.run.run_id }}</code> · generated {{ report.run.generated_at }}</p>
+    <p class="meta">Contract {{ report.run.contract.name }} ({{ report.run.contract.sha256[:16] }}…) · source <code>{{ report.run.input_dir }}</code></p>
+  </header>
+
+  <section class="cards">
+    <div class="card"><span class="meta">Documents</span><strong>{{ report.run.counts.documents }}</strong></div>
+    <div class="card"><span class="meta">Annotations</span><strong>{{ report.run.counts.annotations }}</strong></div>
+    <div class="card"><span class="meta">Entities</span><strong>{{ report.run.counts.entities }}</strong></div>
+    <div class="card"><span class="meta">Errors</span><strong>{{ report.run.counts.issues.by_severity.error }}</strong></div>
+    <div class="card"><span class="meta">Warnings</span><strong>{{ report.run.counts.issues.by_severity.warn }}</strong></div>
+    <div class="card"><span class="meta">Info</span><strong>{{ report.run.counts.issues.by_severity.info }}</strong></div>
+  </section>
+
+  <h2>Documents</h2>
+  <table>
+    <thead><tr><th>Path</th><th>SHA-256</th><th>Bytes</th><th>Status</th><th>Duplicate of</th></tr></thead>
+    <tbody>
+    {% for document in report.documents %}
+      <tr>
+        <td class="mono">{{ document.path }}</td>
+        <td class="mono">{{ document.sha256[:20] }}…</td>
+        <td>{{ document.size }}</td>
+        <td>{{ document.parse_status }}</td>
+        <td class="mono">{{ document.duplicate_of or "—" }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Entities</h2>
+  {% for entity in report.entities %}
+  <article class="entity">
+    <h3><code>{{ entity.entity_id }}</code> · {{ entity.primary_type }}</h3>
+    <p>
+      {% for type_name in entity.types %}<span class="chip">{{ type_name }}</span>{% endfor %}
+      <span class="meta">key {{ entity.key }}</span>
+    </p>
+    <p class="meta">{{ entity.sources|length }} source annotation(s); {{ entity.fields|length }} field(s).</p>
+    {% if entity.conflicts %}
+      <p class="warn">Conflicting fields: {% for item in entity.conflicts %}<code>{{ item }}</code>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+    {% endif %}
+    <table>
+      <thead><tr><th>Field</th><th>Normalized value</th><th>Raw value</th><th>Source</th></tr></thead>
+      <tbody>
+      {% for field_name, values in entity.fields.items() %}
+        {% for value in values %}
+        <tr>
+          <td class="mono">{{ field_name }}</td>
+          <td class="mono">{{ value.value if value.value is string else canonical_json(value.value) }}</td>
+          <td class="mono">{{ value.raw if value.raw is string else canonical_json(value.raw) }}</td>
+          <td class="mono">{{ value.document }} · {{ value.syntax }} · {{ value.locator }}</td>
+        </tr>
+        {% endfor %}
+      {% endfor %}
+      </tbody>
+    </table>
+    <details>
+      <summary>Source locators and evidence hashes</summary>
+      <table>
+        <thead><tr><th>Annotation</th><th>Document</th><th>Syntax</th><th>Locator</th><th>Fragment SHA-256</th></tr></thead>
+        <tbody>
+        {% for source in entity.sources %}
+          <tr>
+            <td class="mono">{{ source.annotation_id }}</td>
+            <td class="mono">{{ source.document }}</td>
+            <td>{{ source.syntax }}</td>
+            <td class="mono">{{ source.locator }}</td>
+            <td class="mono">{{ source.fragment_sha256 }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </details>
+  </article>
+  {% else %}
+  <p>No entities extracted.</p>
+  {% endfor %}
+
+  <h2>Issues by code</h2>
+  <table>
+    <thead><tr><th>Code</th><th>Count</th></tr></thead>
+    <tbody>
+    {% for code, count in report.run.counts.issues.by_code.items() %}
+      <tr><td class="mono">{{ code }}</td><td>{{ count }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Issue ledger</h2>
+  <table>
+    <thead><tr><th>Severity</th><th>Code</th><th>Document</th><th>Locator</th><th>Field</th><th>Evidence SHA-256</th></tr></thead>
+    <tbody>
+    {% for issue in report.issues %}
+      <tr>
+        <td class="{{ issue.severity }}">{{ issue.severity }}</td>
+        <td class="mono">{{ issue.code }}</td>
+        <td class="mono">{{ issue.document or "—" }}</td>
+        <td class="mono">{{ issue.locator }}</td>
+        <td class="mono">{{ issue.field or "—" }}</td>
+        <td class="mono">{{ issue.evidence_sha256[:20] }}…</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <footer>Generated locally by microtag_harvest. This report contains no external resources or network references.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Overview · Microtag Harvest{% endblock %}
+{% block content %}
+<h1>Run overview</h1>
+<p class="meta">Run <code>{{ run.run_id }}</code> · fixed time {{ run.now }} · contract {{ run.contract_name }}</p>
+<section class="cards">
+  <div class="card"><span class="meta">Documents</span><strong>{{ run.counts.documents }}</strong></div>
+  <div class="card"><span class="meta">Annotations</span><strong>{{ run.counts.annotations }}</strong></div>
+  <div class="card"><span class="meta">Entities</span><strong>{{ run.counts.entities }}</strong></div>
+  <div class="card"><span class="meta">Errors</span><strong>{{ run.counts.issues.by_severity.error }}</strong></div>
+  <div class="card"><span class="meta">Warnings</span><strong>{{ run.counts.issues.by_severity.warn }}</strong></div>
+  <div class="card"><span class="meta">Info</span><strong>{{ run.counts.issues.by_severity.info }}</strong></div>
+</section>
+
+<h2>Issue codes</h2>
+<table>
+  <thead><tr><th>Code</th><th>Count</th></tr></thead>
+  <tbody>
+  {% for code, count in run.counts.issues.by_code.items() %}
+    <tr><td><a href="{{ url_for('issues', code=code) }}"><code>{{ code }}</code></a></td><td>{{ count }}</td></tr>
+  {% else %}
+    <tr><td colspan="2">No issues.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2>Published artifacts</h2>
+<table>
+  <thead><tr><th>Format</th><th>Path</th><th>SHA-256</th><th>Bytes</th></tr></thead>
+  <tbody>
+  {% for report in reports %}
+    <tr>
+      <td>{{ report.format }}</td>
+      <td class="mono">{{ report.path }}</td>
+      <td class="mono">{{ report.sha256 }}</td>
+      <td>{{ report.size }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="meta">Input archive: <code>{{ run.input_dir }}</code></p>
+{% endblock %}
