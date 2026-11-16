@@ -6,3 +6,9 @@ out/
 *.sqlite3
 .coverage
 htmlcov/
+venv/
+node_modules/
+*.pyc
+.benchmarks/
+.env
+dist/
