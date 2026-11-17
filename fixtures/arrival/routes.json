@@ -1,0 +1,8 @@
+{
+  "venue": "Sample Hall",
+  "origin": "Central Stop",
+  "services": [
+    {"id":"H","depart":"2026-02-15T09:00:00+08:00","scheduled_arrive":"2026-02-15T09:40:00+08:00","fare_cents":800},
+    {"id":"D","depart":"2026-02-15T09:10:00+08:00","scheduled_arrive":"2026-02-15T09:50:00+08:00","fare_cents":1200}
+  ]
+}

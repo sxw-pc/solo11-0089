@@ -1,0 +1,17 @@
+{
+  "signal_time": "2026-02-15T08:50:00+08:00",
+  "on_time_threshold": 0.85,
+  "state_prior": {"clear": 0.75, "storm": 0.25},
+  "signal_likelihood": {
+    "clear": {"red": 0.1, "green": 0.9},
+    "storm": {"red": 0.8, "green": 0.2}
+  },
+  "actual_arrivals": {
+    "H": {"clear": "2026-02-15T09:45:00+08:00", "storm": "2026-02-15T10:10:00+08:00"},
+    "D": {"clear": "2026-02-15T10:05:00+08:00", "storm": "2026-02-15T09:50:00+08:00"}
+  },
+  "tickets": {
+    "fixed_H": {"allowed_services": ["H"], "choice_time": "purchase_before_signal"},
+    "flexible": {"allowed_services": ["H", "D"], "choice_time": "after_signal"}
+  }
+}
