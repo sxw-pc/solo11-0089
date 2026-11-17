@@ -1,0 +1,72 @@
+{
+  "target": "https://example.invalid/ownership/target",
+  "contracts": [
+    {
+      "contract_id": "economic_entitlement",
+      "share_field": "economic_share",
+      "control_threshold": 0.5
+    },
+    {
+      "contract_id": "proxy_vote_entitlement",
+      "share_field": "proxy_vote_share",
+      "control_threshold": 0.5
+    }
+  ],
+  "declarations": [
+    {
+      "owner": "https://example.invalid/ownership/holda",
+      "company": "https://example.invalid/ownership/target",
+      "economic_share": 0.57,
+      "proxy_vote_share": 0.38
+    },
+    {
+      "owner": "https://example.invalid/ownership/holdb",
+      "company": "https://example.invalid/ownership/target",
+      "economic_share": 0.38,
+      "proxy_vote_share": 0.57
+    },
+    {
+      "owner": "https://example.invalid/ownership/loopx",
+      "company": "https://example.invalid/ownership/target",
+      "economic_share": 0.05,
+      "proxy_vote_share": 0.05
+    },
+    {
+      "owner": "https://example.invalid/ownership/alice",
+      "company": "https://example.invalid/ownership/holda",
+      "economic_share": 0.6,
+      "proxy_vote_share": 0.6
+    },
+    {
+      "owner": "https://example.invalid/ownership/holdb",
+      "company": "https://example.invalid/ownership/holda",
+      "economic_share": 0.4,
+      "proxy_vote_share": 0.4
+    },
+    {
+      "owner": "https://example.invalid/ownership/bob",
+      "company": "https://example.invalid/ownership/holdb",
+      "economic_share": 0.6,
+      "proxy_vote_share": 0.6
+    },
+    {
+      "owner": "https://example.invalid/ownership/holda",
+      "company": "https://example.invalid/ownership/holdb",
+      "economic_share": 0.4,
+      "proxy_vote_share": 0.4
+    },
+    {
+      "owner": "https://example.invalid/ownership/loopy",
+      "company": "https://example.invalid/ownership/loopx",
+      "economic_share": 1.0,
+      "proxy_vote_share": 1.0
+    },
+    {
+      "owner": "https://example.invalid/ownership/loopx",
+      "company": "https://example.invalid/ownership/loopy",
+      "economic_share": 1.0,
+      "proxy_vote_share": 1.0
+    }
+  ],
+  "note": "Synthetic pass-through point shares, not statutory beneficial-ownership rules."
+}
