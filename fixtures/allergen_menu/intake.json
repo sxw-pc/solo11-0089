@@ -1,0 +1,24 @@
+{
+  "event_id": "https://example.invalid/events/spring#event",
+  "assay_budget": 2,
+  "dishes": [
+    {"lot_id": "A", "dish_id": "dish-A", "service_value": 3},
+    {"lot_id": "B", "dish_id": "dish-B", "service_value": 9},
+    {"lot_id": "C", "dish_id": "dish-C", "service_value": 10},
+    {"lot_id": "D", "dish_id": "dish-D", "service_value": 6},
+    {"lot_id": "E", "dish_id": "dish-E", "service_value": 12}
+  ],
+  "possible_worlds": [
+    {"world_id": "w1", "prior_weight": 2, "contaminated_lots": ["B", "E"]},
+    {"world_id": "w2", "prior_weight": 3, "contaminated_lots": ["C", "E"]},
+    {"world_id": "w3", "prior_weight": 15, "contaminated_lots": ["D", "E"]},
+    {"world_id": "w4", "prior_weight": 14, "contaminated_lots": ["A", "B", "D"]},
+    {"world_id": "w5", "prior_weight": 4, "contaminated_lots": ["B", "D", "E"]},
+    {"world_id": "w6", "prior_weight": 1, "contaminated_lots": ["C", "D", "E"]},
+    {"world_id": "w7", "prior_weight": 9, "contaminated_lots": ["A", "B", "E"]}
+  ],
+  "contracts": {
+    "worst_menu": {"objective": "maximize_minimum_safe_service_value", "minimum_value": 12},
+    "expected_menu": {"objective": "maximize_prior_expected_safe_service_value", "minimum_value": "17"}
+  }
+}

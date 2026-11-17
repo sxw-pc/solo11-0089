@@ -1,0 +1,10 @@
+{
+  "worst_menu": {
+    "first_assay": "A", "second_if_clean": "B", "second_if_contaminated": "D", "minimum_safe_value": 12,
+    "first_action_upper_bounds": {"A": 12, "B": 10, "C": 10, "D": 10, "E": 10}
+  },
+  "expected_menu": {
+    "first_assay": "B", "second_if_clean": "C", "second_if_contaminated": "E", "prior_expected_safe_value": "209/12",
+    "first_action_upper_bounds": {"A": "773/48", "B": "209/12", "C": "343/24", "D": "301/24", "E": "343/24"}
+  }
+}
