@@ -1,0 +1,19 @@
+{
+  "event_id": "https://example.invalid/events/spring#event",
+  "model": "one_fraudulent_entry_risk_per_round; adversary_sees_policy_but_not_draw",
+  "risks": [
+    {"risk_id": "name-swap", "loss": "12", "prior": "0.40"},
+    {"risk_id": "cloned-qr", "loss": "10", "prior": "0.35"},
+    {"risk_id": "expired-pass", "loss": "8", "prior": "0.25"}
+  ],
+  "checks": [
+    {"check_id": "name-review", "detection": {"name-swap": "1", "cloned-qr": "0", "expired-pass": "0"}},
+    {"check_id": "qr-verify", "detection": {"name-swap": "0", "cloned-qr": "1", "expired-pass": "0"}},
+    {"check_id": "expiry-review", "detection": {"name-swap": "0", "cloned-qr": "0", "expired-pass": "1"}},
+    {"check_id": "dual-quick", "detection": {"name-swap": "0.75", "cloned-qr": "0.75", "expired-pass": "0"}}
+  ],
+  "contracts": {
+    "deterrence_cover": {"objective": "minimize_worst_undetected_loss", "max_worst_loss": "6"},
+    "throughput_yield": {"objective": "maximize_prior_expected_avoided", "min_expected_avoided": "6"}
+  }
+}

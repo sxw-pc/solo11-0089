@@ -1,0 +1,5 @@
+{
+  "deterrence_policy": {"name-review": "8/87", "qr-verify": "0", "expiry-review": "27/87", "dual-quick": "52/87"},
+  "adversary_policy": {"name-swap": "10/29", "cloned-qr": "4/29", "expired-pass": "15/29"},
+  "optimal_worst_loss": "160/29"
+}
