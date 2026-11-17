@@ -1,0 +1,14 @@
+{
+  "event_id": "https://example.invalid/events/spring#event",
+  "rows": ["local", "visiting"],
+  "columns": ["morning", "afternoon", "evening"],
+  "counts": {
+    "local": {"morning": 2, "afternoon": 6, "evening": 5},
+    "visiting": {"morning": 7, "afternoon": 4, "evening": 8}
+  },
+  "mask_below": 3,
+  "contracts": {
+    "margin_priority": "retain_all_row_and_column_totals",
+    "detail_priority": "retain_all_nonsensitive_cells"
+  }
+}
