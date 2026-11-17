@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -27,7 +28,10 @@ class TimetablePages:
         metadata = next((item for item in self.manifest["pages"] if item["page"] == page), None)
         if metadata is None:
             raise ValueError("unknown timetable page")
-        routes = json.loads((self.root / metadata["path"]).read_text(encoding="utf-8"))
+        page_bytes = (self.root / metadata["path"]).read_bytes()
+        if hashlib.sha256(page_bytes).hexdigest() != metadata.get("sha256"):
+            raise ValueError("timetable page digest mismatch")
+        routes = json.loads(page_bytes.decode("utf-8"))
         self._cache[page] = routes
         self.fetches += 1
         return routes
@@ -50,7 +54,10 @@ def inspect_arrival_network(event: MergedEntity, root: Path) -> dict[str, Any]:
     for index, metadata in enumerate(pages):
         if metadata.get("page") != index or metadata.get("path") != f"pages/{index:02d}.json":
             raise ValueError("timetable page directory is not canonical")
-        routes = json.loads((root / metadata["path"]).read_text(encoding="utf-8"))
+        page_bytes = (root / metadata["path"]).read_bytes()
+        if hashlib.sha256(page_bytes).hexdigest() != metadata.get("sha256"):
+            raise ValueError("timetable page digest mismatch")
+        routes = json.loads(page_bytes.decode("utf-8"))
         if not isinstance(routes, list) or len(routes) != 32:
             raise ValueError("timetable page needs 32 routes")
         general: list[str] = []

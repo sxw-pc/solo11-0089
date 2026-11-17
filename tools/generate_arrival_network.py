@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -45,12 +46,13 @@ def generate() -> None:
         path = f"pages/{page:02d}.json"
         target = ROOT / path
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(json.dumps(routes, sort_keys=True, separators=(",", ":")) + "\n",
-                          encoding="utf-8")
+        page_bytes = (json.dumps(routes, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+        target.write_bytes(page_bytes)
         general = min(route["second"]["arrive"] for route in routes)
         step_free = min((route["second"]["arrive"] for route in routes
                          if route["accessible"]), default=None)
         pages.append({"page": page, "path": path,
+                      "sha256": hashlib.sha256(page_bytes).hexdigest(),
                       "general_lower_bound_arrive": general,
                       "step_free_lower_bound_arrive": step_free})
     manifest = {
