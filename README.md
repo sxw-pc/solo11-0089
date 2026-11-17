@@ -22,6 +22,19 @@
 - 完整 JSON-LD、Microdata、RDFa 或公共词汇规范校验器。
 - 抓取合规扫描、robots.txt 判定或站点链接巡检。
 
+## Event 系列证据实验
+
+`fixtures/series-site` 有一个本地 Event、Article 和 Person 归档，
+`fixtures/series` 有对应的周期条款与取消公告。`series-evidence` 只核实体
+身份、起始瞬间、时区、合同字段和公告引用，不展开日历发生实例。
+
+```bash
+python -m microtag_harvest run --input fixtures/series-site --contract fixtures/contracts/site.yaml --out ../series-work --now 2025-03-01T00:00:00Z
+python -m microtag_harvest series-evidence --report ../series-work/report.json --terms fixtures/series/terms.json --notice fixtures/series/notice.json
+```
+
+`wrong-event.json` 和 `conflicting-notice.json` 可用于拒绝路径；运行输出应放在源码目录外。
+
 ## 安装
 
 要求 Python 3.11 或更高版本。

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "notice_id": "N100",
+  "article_id": "https://example.invalid/events/clinic#notice",
+  "event_id": "https://example.invalid/events/other#event",
+  "kind": "cancel_occurrence",
+  "occurrence_index": 3,
+  "published_at": "2025-02-28T12:00:00Z"
+}

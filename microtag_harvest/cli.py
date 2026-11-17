@@ -113,6 +113,13 @@ def _golden(args: argparse.Namespace) -> int:
     return 1
 
 
+def _series_evidence(args: argparse.Namespace) -> int:
+    from .series_evidence import load_series_evidence
+
+    sys.stdout.write(pretty_json(load_series_evidence(args.report, args.terms, args.notice)))
+    return 0
+
+
 def _serve(args: argparse.Namespace) -> int:
     db_path = Path(args.db)
     if not db_path.exists():
@@ -155,6 +162,12 @@ def build_parser() -> argparse.ArgumentParser:
     golden_parser.add_argument("--expected", default="fixtures/expected/report_summary.json")
     golden_parser.add_argument("--write", action="store_true")
     golden_parser.set_defaults(handler=_golden)
+
+    series_parser = subparsers.add_parser("series-evidence", help="validate local Event series sources")
+    series_parser.add_argument("--report", required=True)
+    series_parser.add_argument("--terms", required=True)
+    series_parser.add_argument("--notice", required=True)
+    series_parser.set_defaults(handler=_series_evidence)
 
     serve_parser = subparsers.add_parser("serve", help="start the read-only review UI")
     serve_parser.add_argument("--db", default="out/ledger.sqlite3")

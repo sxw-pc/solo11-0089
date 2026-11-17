@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Weekly Example Clinic</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://example.invalid/vocab",
+    "@graph": [
+      {
+        "@type": "Event",
+        "@id": "https://example.invalid/events/clinic#event",
+        "name": "Weekly Example Clinic",
+        "startDate": "2025-03-02T02:30:00-05:00",
+        "endDate": "2025-03-02T03:30:00-05:00",
+        "location": {"@type": "Place", "name": "Sample Hall"},
+        "url": "https://example.invalid/events/clinic.html"
+      },
+      {
+        "@type": "Article",
+        "@id": "https://example.invalid/events/clinic#notice",
+        "headline": "Weekly clinic schedule notice",
+        "author": "https://example.invalid/people/avery#person",
+        "datePublished": "2025-02-01",
+        "url": "https://example.invalid/events/clinic.html"
+      }
+    ]
+  }
+  </script>
+</head>
+<body><h1>Weekly Example Clinic</h1></body>
+</html>
