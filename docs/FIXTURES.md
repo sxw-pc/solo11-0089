@@ -57,3 +57,34 @@ python -m microtag_harvest golden \
 5. 更新 golden 后运行完整测试。
 
 不要将真实抓取归档、个人数据、凭据或真实域名加入 `fixtures/`。
+
+## 合成到场披露（attendance_disclosure）
+
+`fixtures/attendance_disclosure/intake.json` 是纯合成演练数据：2×3 到场网格（行
+`local`/`visiting`，列 `morning`/`afternoon`/`evening`），每格为 0..20 的非负整数，
+`mask_below=3` 标识敏感格（本 fixture 为 `local:morning=2`）。`witness.json` 保存两份
+不同于真实表、但保持全部行列合计的相容网格，仅作测试见证，引擎不得硬编码其中数字。
+
+`microtag_harvest/attendance_disclosure.py` 用有界精确枚举（回溯 + 行列和剪枝，支持最大
+3×4）构造与已发布统计相容的全部整数网格。发布规则：
+
+- 每个真实值低于 `mask_below` 的敏感格，在相容集合中必须至少有 3 个不同整数取值，否则
+  拒绝发布（`refusals`）而不是用噪声掩盖。
+- `margin_priority` 合同保留全部行/列合计，最小化被隐藏的精确格数（本 fixture 为
+  `local:morning`、`local:afternoon`、`visiting:morning`、`visiting:afternoon` 组成的
+  2×2 环，共 4 格）。
+- `detail_priority` 合同保留其余全部非敏感格，最小化被隐藏的合计数（本 fixture 必须同时
+  隐藏 `local` 行合计与 `morning` 列合计，只隐藏其一会从另一端反推出 2）。
+- 每份交付物附带敏感格可能取值、至少三份相容网格见证、线性依赖说明，以及枚举了所有更小
+  隐藏方案并证明其均不满足隐私条件的最小性证书。
+- `source_fingerprint` 绑定行/列标签、计数、阈值与上限；Event 身份变化或源 `counts`
+  变更都会改变指纹并强制重算，禁止沿用旧披露。
+
+`attendance_disclosure_intake.naive_preview` 仅保留为泄漏诊断（输出标记
+`unsafe_naive_preview_do_not_publish`），演示 13−6−5 与 9−7 如何反推出被隐藏的 2，
+不得作为统计产品发布。命令行：
+
+```bash
+python -B -m microtag_harvest.attendance_disclosure_intake \
+  --fixture fixtures/attendance_disclosure/intake.json
+```
