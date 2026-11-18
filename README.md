@@ -102,6 +102,15 @@ JSON、Markdown、HTML 报告的顶层内容包括运行元数据、契约摘要
 
 同一输入、同一契约、同一 `--now` 下重复执行 `run`，`report.json` 字节稳定；同一标注不会因为重跑而增长。SQLite 以 `document_sha256 + syntax + locator + fragment_sha256` 作为标注唯一约束，并区分不同运行、保留契约快照、参数快照和报告哈希。
 
+## 入场核验随机政策
+
+`entry_screening_intake` 在采集器核实唯一 Event 后，为两份独立合同签发行事前方随机核验政策：`deterrence_cover` 用精确有理数线性规划最小化最坏漏检损失并附原始–对偶最优性证书，`throughput_yield` 在概率单纯形上最大化先验加权期望避免损失。政策与证书绑定 Event 身份和风险/check 矩阵指纹，矩阵或身份变化时旧证书失效。详见 [入场核验政策](docs/ENTRY_POLICY.md)。
+
+```bash
+python -B -m microtag_harvest.entry_screening_intake \
+  --fixture fixtures/entry_screening/intake.json
+```
+
 ## 测试
 
 ```bash
@@ -138,3 +147,4 @@ make test
 - [契约格式与错误码](docs/CONTRACTS.md)
 - [报告结构](docs/REPORTS.md)
 - [Fixture 说明](docs/FIXTURES.md)
+- [入场核验随机政策与最优性证书](docs/ENTRY_POLICY.md)
