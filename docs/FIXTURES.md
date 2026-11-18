@@ -46,6 +46,26 @@ python -m microtag_harvest golden \
 
 重建后应运行 `pytest -q` 与 `make demo`；除有意更新 fixture 或规则外，不应修改 golden。
 
+## 赞助竞价 fixture
+
+`fixtures/sponsor_auction/intake.json` 绑定合成站点中经采集器核实的 `Event`
+（`https://example.invalid/events/spring#event`），并声明三个位置
+`hero`、`sidebar`、`footer`、两份授权销售合同 `first_price` 与
+`externality_price`，以及五份虚构报价：
+
+| 报价 | 广告主 | 位置 | 金额 |
+|---|---|---|---|
+| `b1` | `adv1` | `hero`+`sidebar` | 20 |
+| `b6` | `adv1` | `hero` | 16 |
+| `b2` | `adv2` | `hero` | 15 |
+| `b3` | `adv3` | `sidebar` | 3 |
+| `b4` | `adv4` | `footer` | 5 |
+
+`b1` 与 `b6` 是同一广告主的互斥替代报价，最多赢一份。组合最优为
+`b1+b4 = 25`；逐位置原子预览只能得到 `b6+b3+b4 = 24`。同一分配下
+`first_price` 卖方收入 25，`externality_price` 卖方收入 18（`b1` 付 18、
+`b4` 付 0）。所有数据均为本地虚构素材。
+
 ## 扩展 fixture
 
 新增页面时：

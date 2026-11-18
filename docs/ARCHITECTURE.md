@@ -25,6 +25,7 @@
 | `queries.py` | 运行、文档、实体、问题、报告和原始片段的只读查询。 |
 | `report.py` | JSON、Markdown、自包含 HTML、golden 摘要和报告比较。 |
 | `web.py` | 只读 Flask 复核台；固定 loopback，设置 CSP 与安全响应头。 |
+| `sponsor_auction_intake.py` | 对已核实 Event 做有界精确赞助位组合竞价、最优性/破平手证书与两份销售合同发票。 |
 
 ## 数据流
 

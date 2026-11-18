@@ -1,6 +1,7 @@
 {
   "event_id": "https://example.invalid/events/spring#event",
   "placements": ["hero", "sidebar", "footer"],
+  "contracts": ["first_price", "externality_price"],
   "bids": [
     {"bid_id": "b1", "advertiser": "adv1", "placements": ["hero", "sidebar"], "amount": 20},
     {"bid_id": "b6", "advertiser": "adv1", "placements": ["hero"], "amount": 16},
