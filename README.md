@@ -35,6 +35,25 @@ python -m microtag_harvest series-evidence --report ../series-work/report.json -
 
 `wrong-event.json` 和 `conflicting-notice.json` 可用于拒绝路径；运行输出应放在源码目录外。
 
+## Event 周期发生表
+
+`event-series` 在 `series-evidence` 全部校验通过后才输出每个逻辑发生序号，
+不重新抽取实体，也不从 `Article.datePublished` 或任何显示时间反推起点：
+
+```bash
+python -m microtag_harvest event-series --report ../series-work/report.json --terms fixtures/series/terms.json --notice fixtures/series/notice.json --output ../series-work/event-series.json
+```
+
+两份合同独立求值、互不替换：`wall_clock` 保证同一当地钟点，春季 DST gap
+（如 2025-03-09 的 America/New_York 02:30）按条款记为 `gap_skipped` 且不产生
+UTC 瞬间；`elapsed_168h` 从首个真实 UTC 瞬间起每 168 小时一次，再换算为当地
+显示时间（gap 当日显示为 03:30）。取消公告 N100 按逻辑 `occurrence_index`
+绑定，两合同下第三次的 UTC 不同却同时命中序号 3。每条发生实例保留
+Event/Article/Person 来源身份、合同 ID、稳定 `occurrence_id` 与证据指纹；
+起点或公告身份变化时整表重算或直接拒绝，同一输入重跑字节稳定。
+`series-shift` 站点与 `terms-shift.json`、`notice-index4.json`、
+`unknown-person.json` 覆盖起点重算、公告改号和无效来源阻断路径。
+
 ## 安装
 
 要求 Python 3.11 或更高版本。

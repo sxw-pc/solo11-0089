@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "event_id": "https://example.invalid/events/clinic#event",
+  "article_id": "https://example.invalid/events/clinic#notice",
+  "organizer_id": "https://example.invalid/people/avery#person",
+  "zone": "America/New_York",
+  "local_start": "2025-03-02T03:30:00",
+  "duration_minutes": 60,
+  "weekly_occurrences": 4,
+  "contracts": [
+    {"id": "wall_clock", "promise": "same_local_time", "gap": "skip"},
+    {"id": "elapsed_168h", "promise": "fixed_168_hours", "gap": "not_applicable"}
+  ]
+}

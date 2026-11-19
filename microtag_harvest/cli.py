@@ -120,6 +120,18 @@ def _series_evidence(args: argparse.Namespace) -> int:
     return 0
 
 
+def _event_series(args: argparse.Namespace) -> int:
+    from .event_series import build_event_series
+
+    content = pretty_json(build_event_series(args.report, args.terms, args.notice))
+    if args.output:
+        write_text(Path(args.output), content)
+        print(f"event-series written output={args.output} sha256={sha256_hex(content)}")
+    else:
+        sys.stdout.write(content)
+    return 0
+
+
 def _serve(args: argparse.Namespace) -> int:
     db_path = Path(args.db)
     if not db_path.exists():
@@ -168,6 +180,16 @@ def build_parser() -> argparse.ArgumentParser:
     series_parser.add_argument("--terms", required=True)
     series_parser.add_argument("--notice", required=True)
     series_parser.set_defaults(handler=_series_evidence)
+
+    event_series_parser = subparsers.add_parser(
+        "event-series",
+        help="materialize the Event occurrence table from validated series evidence",
+    )
+    event_series_parser.add_argument("--report", required=True)
+    event_series_parser.add_argument("--terms", required=True)
+    event_series_parser.add_argument("--notice", required=True)
+    event_series_parser.add_argument("--output", default=None, help="write table to this path")
+    event_series_parser.set_defaults(handler=_event_series)
 
     serve_parser = subparsers.add_parser("serve", help="start the read-only review UI")
     serve_parser.add_argument("--db", default="out/ledger.sqlite3")
