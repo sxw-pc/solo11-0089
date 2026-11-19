@@ -1,0 +1,18 @@
+{
+  "orders": [
+    {
+      "order_id": "order-a",
+      "product_id": "https://example.invalid/catalog/gadget#product",
+      "offer_id": "https://example.invalid/catalog/gadget#offer-s-red",
+      "at": "2025-03-01T12:00:00Z",
+      "quantity": 1
+    },
+    {
+      "order_id": "order-b",
+      "product_id": "https://example.invalid/catalog/gadget#product",
+      "offer_id": "https://example.invalid/catalog/gadget#offer-s-blue",
+      "at": "2025-03-01T12:05:00Z",
+      "quantity": 1
+    }
+  ]
+}

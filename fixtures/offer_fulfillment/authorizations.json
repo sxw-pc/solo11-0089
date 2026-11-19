@@ -1,0 +1,23 @@
+{
+  "buyer_consents": [
+    {
+      "offer_id": "https://example.invalid/catalog/gadget#offer-t-red",
+      "order_id": "order-a",
+      "product_id": "https://example.invalid/catalog/gadget#product",
+      "quote_sha256": "7e44a65476c238234394c29c3f5ae0519d332d1b6cc23ab78605d0ae4a857b8f",
+      "receipt_sha256": "aad2ccd1083cfa15f095d193a14f64c6ef0f8b087eac113d783e43e059cc0826"
+    }
+  ],
+  "platform_policy": {
+    "currency": "USD",
+    "max_subsidy_per_order": "2.00"
+  },
+  "seller_acceptances": [
+    {
+      "offer_id": "https://example.invalid/catalog/gadget#offer-t-red",
+      "product_id": "https://example.invalid/catalog/gadget#product",
+      "quote_sha256": "7e44a65476c238234394c29c3f5ae0519d332d1b6cc23ab78605d0ae4a857b8f",
+      "seller": "seller-t"
+    }
+  ]
+}

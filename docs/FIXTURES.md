@@ -22,6 +22,10 @@
 | `fixtures/site/edge/copy-a.html` | 无标注的普通合成页。 |
 | `fixtures/site/edge/copy-b.html` | 与 `copy-a.html` 字节相同，用于重复文档标记和 `DOC_DUPLICATE_CONTENT`。 |
 
+## 报价与履约 fixture
+
+`fixtures/offer_lifecycle/` 提供 `initial` 与 `current` 两份独立 HTML 归档和 `order.json`，用于单笔锁价与价格争议演示。`fixtures/offer_fulfillment/` 提供隔离的 Product/Offer 归档（卖家 S 的红/蓝 variant 各 USD 10、卖家 T 的红款 USD 12）、`orders.json` 两笔锁价订单、`inventory.json` 两个共享库存 lot、`authorizations.json` 显式替代授权，以及预生成的 `report.initial.json`；详见该目录的 `README.md`。
+
 ## 合成契约
 
 `fixtures/contracts/site.yaml` 声明 `Organization`、`Person`、`Product`、`Event`、`Article` 和 `Metadata`。`Metadata` 使用 `unknown_fields: ignore`，其余类型使用全局 `unknown_field: warn`；未知类型策略为 `error`。

@@ -96,6 +96,49 @@ def _quote_review(args: argparse.Namespace) -> int:
     return 0 if result["review"] and result["review"]["status"] == "honor_locked_price" else 1
 
 
+def _fulfillment_plan(args: argparse.Namespace) -> int:
+    from .offer_lifecycle import plan_fulfillment
+
+    if args.original_report and args.input:
+        print("error: choose only one of --original-report or --input", file=sys.stderr)
+        return 2
+    if args.original_report:
+        original = _load_report(args.original_report)
+    elif args.input:
+        from .pipeline import build_result
+        from .report import build_report
+
+        config = RunConfig.create(
+            input_dir=args.input,
+            contract_path=args.contract,
+            out_dir="out",
+            now=args.now,
+        )
+        original = build_report(build_result(config))
+    else:
+        print("error: one of --original-report or --input is required", file=sys.stderr)
+        return 2
+    current = _load_report(args.current_report) if args.current_report else original
+    orders_doc = _load_report(args.orders)
+    if not isinstance(orders_doc, dict) or "orders" not in orders_doc:
+        raise ValueError("orders manifest must be an object with an 'orders' list")
+    inventory_doc = _load_report(args.inventory)
+    if not isinstance(inventory_doc, dict) or "lots" not in inventory_doc:
+        raise ValueError("inventory manifest must be an object with a 'lots' list")
+    authorizations = _load_report(args.authorizations) if args.authorizations else {}
+    plan = plan_fulfillment(
+        original,
+        current,
+        orders=orders_doc["orders"],
+        lots=inventory_doc["lots"],
+        authorizations=authorizations,
+        mode=args.mode,
+        plan_at=args.at,
+    )
+    sys.stdout.write(pretty_json(plan))
+    return 0 if plan["totals"]["unfulfilled"] == 0 else 1
+
+
 def _golden(args: argparse.Namespace) -> int:
     summary = golden_summary(_load_report(args.report))
     expected_path = Path(args.expected)
@@ -175,6 +218,37 @@ def build_parser() -> argparse.ArgumentParser:
     quote_parser.add_argument("--current-report", required=True)
     quote_parser.add_argument("--order", required=True)
     quote_parser.set_defaults(handler=_quote_review)
+
+    fulfillment_parser = subparsers.add_parser(
+        "fulfillment-plan",
+        help="plan joint fulfillment of locked orders against local inventory lots",
+    )
+    fulfillment_parser.add_argument(
+        "--original-report", default=None,
+        help="pipeline report JSON used to lock order quotes",
+    )
+    fulfillment_parser.add_argument(
+        "--input", default=None,
+        help="HTML archive directory to build the locking report from instead",
+    )
+    fulfillment_parser.add_argument("--contract", default="fixtures/contracts/site.yaml")
+    fulfillment_parser.add_argument("--now", default=DEFAULT_NOW)
+    fulfillment_parser.add_argument(
+        "--current-report", default=None,
+        help="report JSON for current offers (defaults to the locking report)",
+    )
+    fulfillment_parser.add_argument("--orders", required=True, help="orders manifest JSON")
+    fulfillment_parser.add_argument("--inventory", required=True, help="inventory lots JSON")
+    fulfillment_parser.add_argument(
+        "--authorizations", default=None, help="substitution authorizations JSON"
+    )
+    fulfillment_parser.add_argument(
+        "--mode", required=True, choices=["original_seller", "substitution"],
+    )
+    fulfillment_parser.add_argument(
+        "--at", required=True, help="ISO-8601 instant for evaluating current offers",
+    )
+    fulfillment_parser.set_defaults(handler=_fulfillment_plan)
 
     golden_parser = subparsers.add_parser("golden", help="check or write a golden summary")
     golden_parser.add_argument("--report", default="out/report.json")

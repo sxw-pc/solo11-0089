@@ -1,0 +1,16 @@
+{
+  "lots": [
+    {
+      "lot_id": "lot-l",
+      "seller": "seller-s",
+      "variants": ["red", "blue"],
+      "quantity": 1
+    },
+    {
+      "lot_id": "lot-m",
+      "seller": "seller-t",
+      "variants": ["red"],
+      "quantity": 1
+    }
+  ]
+}

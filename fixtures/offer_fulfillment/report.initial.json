@@ -1,0 +1,230 @@
+{
+  "documents": [
+    {
+      "duplicate_of": null,
+      "error": "",
+      "parse_status": "ok",
+      "path": "product.html",
+      "sha256": "898de2d01fb38256d30df1c99a81134c850fed0241cce7d3754812c8f4993e12",
+      "size": 1448
+    }
+  ],
+  "entities": [
+    {
+      "conflicts": [],
+      "entity_id": "b5002e1fa9cf",
+      "fields": {
+        "name": [
+          {
+            "annotation_id": "3af631ef882a0485",
+            "document": "product.html",
+            "fragment_sha256": "7757b8eb8d024b69546fd8087e1e613e9aba297776089e135d4c735ad8b00555",
+            "locator": "script[type=application/ld+json]#0/entity[0]#name",
+            "raw": "Joint Gadget",
+            "syntax": "json-ld",
+            "value": "Joint Gadget"
+          }
+        ],
+        "offers": [
+          {
+            "annotation_id": "3af631ef882a0485",
+            "document": "product.html",
+            "fragment_sha256": "7757b8eb8d024b69546fd8087e1e613e9aba297776089e135d4c735ad8b00555",
+            "locator": "script[type=application/ld+json]#0/entity[0]#offers",
+            "raw": [
+              {
+                "@id": "https://example.invalid/catalog/gadget#offer-s-red",
+                "@type": "Offer",
+                "availability": "https://example.invalid/vocab/InStock",
+                "price": "10.00",
+                "priceCurrency": "USD",
+                "seller": "seller-s",
+                "validFrom": "2025-01-01T00:00:00Z",
+                "validThrough": "2026-01-01T00:00:00Z",
+                "variant": "red"
+              },
+              {
+                "@id": "https://example.invalid/catalog/gadget#offer-s-blue",
+                "@type": "Offer",
+                "availability": "https://example.invalid/vocab/InStock",
+                "price": "10.00",
+                "priceCurrency": "USD",
+                "seller": "seller-s",
+                "validFrom": "2025-01-01T00:00:00Z",
+                "validThrough": "2026-01-01T00:00:00Z",
+                "variant": "blue"
+              },
+              {
+                "@id": "https://example.invalid/catalog/gadget#offer-t-red",
+                "@type": "Offer",
+                "availability": "https://example.invalid/vocab/InStock",
+                "price": "12.00",
+                "priceCurrency": "USD",
+                "seller": "seller-t",
+                "validFrom": "2025-01-01T00:00:00Z",
+                "validThrough": "2026-01-01T00:00:00Z",
+                "variant": "red"
+              }
+            ],
+            "syntax": "json-ld",
+            "value": [
+              {
+                "@id": "https://example.invalid/catalog/gadget#offer-s-red",
+                "@type": [
+                  "Offer"
+                ],
+                "availability": "https://example.invalid/vocab/InStock",
+                "price": "10.00",
+                "priceCurrency": "USD",
+                "seller": "seller-s",
+                "validFrom": "2025-01-01T00:00:00Z",
+                "validThrough": "2026-01-01T00:00:00Z",
+                "variant": "red"
+              },
+              {
+                "@id": "https://example.invalid/catalog/gadget#offer-s-blue",
+                "@type": [
+                  "Offer"
+                ],
+                "availability": "https://example.invalid/vocab/InStock",
+                "price": "10.00",
+                "priceCurrency": "USD",
+                "seller": "seller-s",
+                "validFrom": "2025-01-01T00:00:00Z",
+                "validThrough": "2026-01-01T00:00:00Z",
+                "variant": "blue"
+              },
+              {
+                "@id": "https://example.invalid/catalog/gadget#offer-t-red",
+                "@type": [
+                  "Offer"
+                ],
+                "availability": "https://example.invalid/vocab/InStock",
+                "price": "12.00",
+                "priceCurrency": "USD",
+                "seller": "seller-t",
+                "validFrom": "2025-01-01T00:00:00Z",
+                "validThrough": "2026-01-01T00:00:00Z",
+                "variant": "red"
+              }
+            ]
+          }
+        ],
+        "sku": [
+          {
+            "annotation_id": "3af631ef882a0485",
+            "document": "product.html",
+            "fragment_sha256": "7757b8eb8d024b69546fd8087e1e613e9aba297776089e135d4c735ad8b00555",
+            "locator": "script[type=application/ld+json]#0/entity[0]#sku",
+            "raw": "GDG-002",
+            "syntax": "json-ld",
+            "value": "GDG-002"
+          }
+        ]
+      },
+      "identifier": "https://example.invalid/catalog/gadget#product",
+      "key": "@id:https://example.invalid/catalog/gadget#product",
+      "primary_type": "Product",
+      "sources": [
+        {
+          "annotation_id": "3af631ef882a0485",
+          "document": "product.html",
+          "fragment_sha256": "7757b8eb8d024b69546fd8087e1e613e9aba297776089e135d4c735ad8b00555",
+          "locator": "script[type=application/ld+json]#0/entity[0]",
+          "syntax": "json-ld"
+        }
+      ],
+      "types": [
+        "Product"
+      ]
+    }
+  ],
+  "issue_groups": {
+    "by_code": {
+      "REMOTE_CONTEXT_NOT_LOADED": 1
+    },
+    "by_severity": {
+      "error": 0,
+      "info": 0,
+      "warn": 1
+    },
+    "total": 1
+  },
+  "issues": [
+    {
+      "code": "REMOTE_CONTEXT_NOT_LOADED",
+      "details": {
+        "contexts": [
+          "https://example.invalid/vocab"
+        ]
+      },
+      "document": "product.html",
+      "entity_type": "",
+      "evidence_sha256": "7757b8eb8d024b69546fd8087e1e613e9aba297776089e135d4c735ad8b00555",
+      "field": "",
+      "issue_id": "77db4f998f86",
+      "locator": "script[type=application/ld+json]#0",
+      "message": "Remote JSON-LD contexts are recorded but never fetched.",
+      "severity": "warn",
+      "syntax": "json-ld"
+    }
+  ],
+  "run": {
+    "contract": {
+      "name": "offer-fulfillment",
+      "path": "fixtures/offer_fulfillment/contract.yaml",
+      "sha256": "cf7be0e4c76df067bbdb1d0cf109c975390801676e980aed0a02bb3dbf4f1a79",
+      "summary": {
+        "name": "offer-fulfillment",
+        "sha256": "cf7be0e4c76df067bbdb1d0cf109c975390801676e980aed0a02bb3dbf4f1a79",
+        "types": {
+          "Product": {
+            "field_count": 4,
+            "recommended": [],
+            "required": [
+              "name",
+              "sku",
+              "offers"
+            ],
+            "unknown_fields": "warn"
+          }
+        },
+        "unknown_field": "warn",
+        "unknown_type": "error",
+        "version": 1
+      },
+      "version": 1
+    },
+    "counts": {
+      "annotations": 1,
+      "documents": 1,
+      "entities": 1,
+      "issues": {
+        "by_code": {
+          "REMOTE_CONTEXT_NOT_LOADED": 1
+        },
+        "by_severity": {
+          "error": 0,
+          "info": 0,
+          "warn": 1
+        },
+        "total": 1
+      }
+    },
+    "generated_at": "2025-03-01T12:00:00Z",
+    "input_dir": "fixtures/offer_fulfillment/site",
+    "now": "2025-03-01T12:00:00Z",
+    "params": {
+      "db_path": "out/ledger.sqlite3",
+      "ignores": [
+        "out",
+        ".git",
+        ".pytest_cache",
+        "__pycache__"
+      ],
+      "out_dir": "out"
+    },
+    "run_id": "10d86c7bb004"
+  },
+  "schema_version": 1
+}

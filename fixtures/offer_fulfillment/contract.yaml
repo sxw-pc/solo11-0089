@@ -1,0 +1,13 @@
+name: offer-fulfillment
+version: 1
+unknown_type: error
+unknown_field: warn
+types:
+  Product:
+    required: [name, sku, offers]
+    recommended: []
+    fields:
+      name: {type: string, format: nonempty}
+      sku: {type: string, format: nonempty}
+      description: {type: string}
+      offers: {type: array}

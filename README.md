@@ -70,6 +70,7 @@ python -m microtag_harvest serve --db out/ledger.sqlite3
 | `golden` | 从 JSON 报告生成确定性 golden 摘要，或校验已有摘要；`--write` 用于显式重建。 |
 | `serve` | 启动只读复核台，固定监听 `127.0.0.1:5017`。 |
 | `quote-review` | 从归档报告中的 Product/Offer 生成本地订单锁价回执，并核对当前报价；不提交订单或访问网络。 |
+| `fulfillment-plan` | 对已锁订单按本地库存 lot 做联合履约规划；替代履约须同时具备买方同意、卖方接受与平台补贴上限的显式授权。 |
 
 报价演示使用 `fixtures/offer_lifecycle/initial` 与 `current` 两份独立本地 HTML 归档。分别用 `run` 生成报告后执行：
 
@@ -81,6 +82,19 @@ python -m microtag_harvest quote-review \
 ```
 
 `quote-review` 只接受显式 Product/Offer ID 与固定锁价时间；同一报价存在互相冲突的有效声明时拒绝锁价。回执保存当时的金额、币种、报价条款摘要和报告运行 ID。争议核定会与原始报告核对，再展示当前报告的报价；本地摘要用于识别材料变化，并非密码学签名或对外订单系统。
+
+履约演示使用 `fixtures/offer_fulfillment/` 下的隔离 HTML 归档、订单、库存与授权清单。`report.initial.json` 由流水线对该归档预生成；`authorizations.json` 中的摘要绑定该报告，改动 HTML 后须重新生成两者：
+
+```bash
+python -m microtag_harvest fulfillment-plan \
+  --original-report fixtures/offer_fulfillment/report.initial.json \
+  --orders fixtures/offer_fulfillment/orders.json \
+  --inventory fixtures/offer_fulfillment/inventory.json \
+  --authorizations fixtures/offer_fulfillment/authorizations.json \
+  --mode substitution --at 2025-03-02T00:00:00Z
+```
+
+`fulfillment-plan` 的 `--mode original_seller` 只允许履行回执中的 seller/variant；`--mode substitution` 额外允许显式授权的替代履约。规划先最大化可履约订单数，等数时按订单锁定时间与稳定键定优先级，再最小化平台补贴；同一输入重复运行的 JSON 字节稳定。全部订单可履约时退出码为 `0`，否则为 `1`，输入或清单错误为 `2`。也可用 `--input HTML目录 --contract 契约 --now 时间` 代替 `--original-report` 现场构建报告。
 
 `run` 常用参数：
 
